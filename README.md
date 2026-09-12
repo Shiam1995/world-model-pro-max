@@ -1,4 +1,21 @@
-# Mario to Sonic
+#World Model Pro Max
+
+1. create policy - train on mario kart 
+2. create area in real world map
+?. define size of car - to be done later
+3. create rendering of map
+4. use policy from mario and finetune
+
+Should be better then zero shot training of a llm , or get a a better answer quicker, better meaning more usable or cheaper to save on inference
+
+5. send data to master model repo , get better generalisation
+
+
+Think about pokemon go , loads of camera created largest dataset ever, this lets end user maybe select route of autonomous delivery with more confidence
+
+
+
+
 
 Solve Mario Kart 64, make the agent show how sure it is, rebuild the courses in
 Unreal where physics is a knob, then drive the same policies round a random
