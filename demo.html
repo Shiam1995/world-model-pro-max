@@ -58,16 +58,18 @@ code{font-family:var(--mono);font-size:.88em;background:var(--panel-2);
 <div class="wrap">
 <p class="eyebrow">Mario Kart 64 &middot; N64 &middot; Luigi Raceway</p>
 <h1>Mario to Sonic</h1>
-<p class="sub">Teaching an agent to drive Mario Kart 64, by lifting the game&rsquo;s own physics
-constants out of a decompilation, fitting them to the real ROM, and training in a simulator
-five thousand times faster than the emulator.</p>
+<p class="sub">A driving policy trained for <b>112 seconds in simulation</b>, which never saw
+the emulator, completes a lap of Luigi Raceway on the real Nintendo&nbsp;64 in
+<b>26.72&nbsp;seconds</b>. The physics constants come from the game&rsquo;s own
+decompilation, fitted to the ROM, and the sim runs five thousand times faster than
+the console.</p>
 
 <div class="strip">
   <div class="stat"><b>493,000</b><span>KART-FRAMES / SEC</span></div>
   <div class="stat"><b>~5,000&times;</b><span>VS EMULATOR</span></div>
   <div class="stat"><b>112 s</b><span>TO TRAIN A DRIVER</span></div>
   <div class="stat"><b>7.2%</b><span>SIM FIT ERROR vs ROM</span></div>
-  <div class="stat"><b>0</b><span>FRAMES OFF-ROAD</span></div>
+  <div class="stat"><b>26.72 s</b><span>REAL N64 LAP</span></div>
 </div>
 
 <section>
@@ -100,10 +102,26 @@ five thousand times faster than the emulator.</p>
 </section>
 
 <section>
-  <h2>Why the first transfer failed</h2>
-  <p class="note">A policy trained in the sim drove straight into the barrier on the real
-  console, every time. Four suspects were ruled out by measurement &mdash; steering sign,
-  yaw convention, parameter error, projection bugs. The cause was none of them.</p>
+  <h2>The lap, on real hardware</h2>
+  <p class="note">Four of five independently seeded policies complete a lap of the real
+  game. The fastest repeats bit-identically three times out of three. None of them were
+  ever trained against the emulator.</p>
+  <div class="panel" style="margin-bottom:20px">
+  <table>
+    <thead><tr><th>Policy</th><th class="n">Real lap</th><th class="n">Time</th><th class="n">Mean speed</th><th class="n">Off-road</th></tr></thead>
+    <tbody>
+      <tr><td><b>luigi_raceway_v2</b></td><td class="n ok">yes</td><td class="n">26.72 s</td><td class="n">3.78</td><td class="n">118 / 1603</td></tr>
+      <tr><td>seed 4</td><td class="n ok">yes</td><td class="n">35.15 s</td><td class="n">2.87</td><td class="n">174 / 2109</td></tr>
+      <tr><td>seed 1</td><td class="n ok">yes</td><td class="n">39.92 s</td><td class="n">2.59</td><td class="n">172 / 2395</td></tr>
+      <tr><td>seed 3</td><td class="n ok">yes</td><td class="n">42.00 s</td><td class="n">2.47</td><td class="n">77 / 2520</td></tr>
+      <tr><td>seed 2</td><td class="n no">no</td><td class="n">&mdash;</td><td class="n">1.01</td><td class="n">&mdash;</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h2>What was breaking it</h2>
+  <p class="note">Before that, a sim-trained policy drove into the barrier every time.
+  Three suspects were ruled out by measurement &mdash; steering sign at the policy output,
+  the yaw trig convention, and parameter error. The cause was none of them.</p>
   <div class="trackwrap">
     <div class="panel">
       <p class="eyebrow" style="color:var(--muted)">Measured on the real ROM</p>
@@ -113,8 +131,18 @@ five thousand times faster than the emulator.</p>
       linear.</p>
     </div>
     <div class="panel">
+      <div class="finding" style="border-color:var(--bad)">
+        <b>The turn was mirrored.</b>
+        <p class="note" style="margin:6px 0 0">Replaying one fixed action script in both
+        worlds: <code>+0.8</code> steer moved the real kart toward <code>+x</code> and the
+        sim kart toward <code>&minus;x</code>. They agreed to 31 units while driving
+        straight and were 678 apart after two turns. <b>This was the one that mattered</b>
+        &mdash; and one open-loop replay found in a single run what hours of closed-loop
+        policy evaluation had hidden, because a policy that fails can always be blamed on
+        the policy.</p>
+      </div>
       <div class="finding">
-        <b>The sim assumed steering was linear.</b>
+        <b>Steering is non-linear, with a deadzone.</b>
         <p class="note" style="margin:6px 0 0">So the policy learned gentle
         &plusmn;0.27 corrections. On the real kart, 0.15 produces
         <em>exactly zero</em> yaw rate and 0.30 gives 5% of full lock. Its corrections
@@ -143,10 +171,11 @@ five thousand times faster than the emulator.</p>
     <tbody>
       <tr><td><span class="pill ok">works</span></td><td>Mario Kart 64 frame-stepped under Python, with exact savestate rollback and live kart telemetry out of RDRAM</td></tr>
       <tr><td><span class="pill ok">works</span></td><td>Physics constants lifted from the decompilation, fitted to the ROM to 7.2% on speed and 0.8% on top speed</td></tr>
-      <tr><td><span class="pill ok">works</span></td><td>Policy trained in 112 s &mdash; 0.75 laps, zero frames off the road, in simulation</td></tr>
+      <tr><td><span class="pill ok">works</span></td><td>Policy trained in 112 s in simulation completes a <b>26.72 s lap on the real Nintendo 64</b>, repeatably, having never trained against it</td></tr>
       <tr><td><span class="pill ok">works</span></td><td>Physics dial from kart to hoverboard, with the cost measured rather than asserted</td></tr>
-      <tr><td><span class="pill wip">partial</span></td><td>Rollback search driving the real console &mdash; reaches 20% of a lap, then wedges</td></tr>
-      <tr><td><span class="pill no">open</span></td><td>Sim&rarr;real transfer. The deadzone is now modelled and it still does not hold a lap, so at least one gap remains</td></tr>
+      <tr><td><span class="pill ok">works</span></td><td>Slot-in API &mdash; <code>Driver.load(&hellip;).drive(env, state)</code>, 385 parameters, ten inputs</td></tr>
+      <tr><td><span class="pill wip">partial</span></td><td>Rollback search driving the real console &mdash; reaches 20% of a lap, then wedges. Superseded by the trained policy</td></tr>
+      <tr><td><span class="pill no">open</span></td><td>The sim has no walls, only an off-road slowdown, so it cannot model a crash. Next: London geometry and the Unreal rebuild</td></tr>
     </tbody>
   </table>
 </section>
