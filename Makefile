@@ -9,7 +9,7 @@ CFLAGS  ?= -O2 -fPIC -Wall -Wextra -std=c11
 BUILD   := build
 PLUGIN  := $(BUILD)/mupen64plus-input-shm.so
 
-.PHONY: all clean test test-player
+.PHONY: all clean test test-player test-obs
 all: $(PLUGIN)
 
 $(PLUGIN): src/plug/input_shm.c | $(BUILD)
@@ -24,6 +24,9 @@ test: all
 
 test-player: all
 	python3 -m src.mk64.player_selftest
+
+test-obs: all
+	python3 -m src.obs.selftest
 
 clean:
 	rm -rf $(BUILD)

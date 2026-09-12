@@ -30,6 +30,11 @@ FIELDS = {
     "steerPosition": (0x07C, "<i4", 1),
     "boostPower":   (0x080, "<f4", 1),
     "speed":        (0x094, "<f4", 1),
+    # The game's own progress index along the course path — how MK64 knows
+    # where you are for lap counting and rank. Far better than inferring
+    # progress from displacement, which cannot tell a corner from a circle.
+    "nearestPathPointId": (0x220, "<i2", 1),
+    "topSpeed":     (0x214, "<f4", 1),
     "currentSpeed": (0x09C, "<f4", 1),
 }
 
@@ -50,7 +55,7 @@ def speed_per_frame(state):
 
 def read(env, base=PLAYER_BASE):
     """Snapshot the kart. One RDRAM read, no allocation of 8 MiB."""
-    raw = env.ram_bytes(base, 0xA0)
+    raw = env.ram_bytes(base, 0x230)
     out = {}
     for name, (off, dt, cnt) in FIELDS.items():
         v = np.frombuffer(raw[off:off + np.dtype(dt).itemsize * cnt], dtype=dt)

@@ -6,6 +6,30 @@ track cut through real London. Design and staging in [SPEC.md](SPEC.md).
 
 ## Status
 
+**Stage 1, milestone 4 — the map and the observation vector — done.** The
+course centreline is extracted from the decomp (`tracks/luigi_raceway.json`, 631
+points), fitted into a `Track` with arc length and curvature, and turned into
+the ten-number vector every world will share.
+
+```
+make test-obs
+[1] observation v1: 10 finite numbers
+[2] straight: |lateral| <= 1.1, |heading err| <= 0.2 deg, progress monotonic
+[3] corner preview leads: curv+2400 1.34 vs curv+300 0.51
+[4] no absolute position, lap or course identity in the vector
+```
+
+Driving straight off the line, the vector reads the world correctly and then
+watches the kart fail, which is the useful part:
+
+```
+ frame | speed | lateral | head_err | curv+300 curv+1200
+   182 |  5.51 |    -0.2 |     0.1d |    -0.00     -0.51   <- corner seen ahead
+   262 |  5.56 |    -1.1 |    -0.2d |    -0.51     -1.27   <- corner arrives
+   342 |  5.14 |    70.9 |   -33.0d |    -1.27     -1.34   <- not turning
+   502 |  0.80 |    80.7 |   -88.3d |    -1.34     -1.32   <- into the wall
+```
+
 **Stage 1, milestone 3 — the kart found — done.** `src/mk64/player.py` reads
 position, velocity, speed, heading and lap straight out of RDRAM. The address
 (`0x0F6990`) was *measured*, not looked up — see below.
@@ -197,8 +221,57 @@ segment search. Turn it off and replay is bit-exact.
 frame — measured at 2.00 exactly. A silent factor of two in every distance,
 reward and lookahead otherwise.
 
+## The map, and a plan that did not survive (milestone 4)
+
+SPEC said: drive a lap, fit a centreline from it, drop checkpoints. The driving
+part failed, and the failure is worth keeping.
+
+`src/mk64/ghost.py` searches out a lap with no map at all — branch the savestate
+across five steering choices, keep whichever covers the most ground. It works
+for about thirty segments and then wedges the kart against the outside wall of
+turn one at speed 0.12. Greedy "cover the most ground in the next half second"
+cannot tell a corner from a circle, and once stuck, every branch scores zero, so
+it has no gradient back out. MK64's own `nearestPathPointId` would have supplied
+real progress, but it stays 0 for the player in a time trial.
+
+So the map comes from the road instead: MK64 ships the path its CPU racers
+follow, and `scripts/extract_course_path.py` reads it out of the decomp
+(`d_course_luigi_raceway_track_path`, 631 points at 20-unit spacing). The kart's
+start position projects **0.5 units** from that centreline, which is the
+confirmation that the extracted path and the live game agree.
+
+That is the same bargain stages 3 and 4 strike anyway — Unreal takes geometry
+from the decomp, London from OSM. Driving blind is only needed where no map
+exists, and `ghost.py` stays in the tree for exactly that case.
+
+Watch for: the path array ends in a `-32768` sentinel row. Leaving it in puts a
+point 32,000 units away and quietly wrecks every arc length and projection.
+
+## The observation vector
+
+`src/obs/track.py` is game-agnostic — a smoothed centreline, arc length,
+curvature — and `src/obs/mk64_adapter.py` is the only file that knows both Mario
+Kart and the vector. Unreal and London get an adapter of the same shape and
+nothing else changes.
+
+```
+speed, lateral_offset, heading_sin, heading_cos,
+curv_300, curv_600, curv_1200, curv_2400, grade, progress_delta
+```
+
+Deliberately contains nothing that identifies *which* track it is: no absolute
+position, no lap, no course id. A policy that cannot tell Luigi Raceway from a
+London roundabout is one that can be moved between them — and `make test-obs`
+asserts that.
+
+Ten numbers, not the twenty SPEC sketched. The rangefinders and track width are
+**missing rather than faked**: both need track *edges*, and Luigi Raceway ships
+only a centreline. They arrive with real geometry in stage 3, and `OBS_VERSION`
+goes up when they do.
+
 ## Next
 
-Milestone 4: ghost → map. Drive a lap, log positions, fit a centreline, and drop
-virtual checkpoints every ~10 m to get dense reward with zero game knowledge —
-then behaviour-clone that lap so training never starts from random.
+Milestone 5: behaviour-clone a lap so training never starts from random, then
+improve it by savestate segment search — now with a real progress signal
+(`track.project`) to search against, which is exactly what the greedy driver
+lacked.
