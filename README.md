@@ -4,6 +4,13 @@ Solve Mario Kart 64, make the agent show how sure it is, rebuild the courses in
 Unreal where physics is a knob, then drive the same policies round a random
 track cut through real London. Design and staging in [SPEC.md](SPEC.md).
 
+## Watch it drive
+
+[`runs/mk64_luigi_raceway_lap.mp4`](runs/mk64_luigi_raceway_lap.mp4) — the trained
+policy driving a 26.70 s lap of Luigi Raceway on the real ROM, captured frame by
+frame through the emulator's own screenshot path so the recording is the drive.
+Re-record it with `python3 scripts/record_lap.py runs/lap_frames policies/luigi_raceway_v2.npy 2`.
+
 ## Status
 
 **Stage 1, milestone 4 — the map and the observation vector — done.** The

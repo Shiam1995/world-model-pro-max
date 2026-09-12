@@ -1,5 +1,6 @@
 build/
-runs/
+runs/*
+!runs/mk64_luigi_raceway_lap.mp4
 __pycache__/
 *.pyc
 *.st
