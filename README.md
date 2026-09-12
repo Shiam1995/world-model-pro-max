@@ -6,6 +6,18 @@ track cut through real London. Design and staging in [SPEC.md](SPEC.md).
 
 ## Status
 
+**Stage 1, milestone 2 — the start line — done.** The menus are walked once by
+`src/mk64/to_race.py` and the result is committed as
+`states/luigi_raceway_tt_start.st`. Every episode now begins from that file:
+boot, `load_state_file(...)`, drive. No menu is ever touched again.
+
+```python
+with MK64Env() as env:
+    env.step(frames=60)
+    env.load_state_file("states/luigi_raceway_tt_start.st")
+    env.step(frames=150, accel=True)     # Mario drives down Luigi Raceway
+```
+
 **Stage 1, milestone 1 — the harness — done.** Mario Kart 64 runs in-process
 under Python with exact frame stepping, analog control, readable RDRAM and
 working rollback.
@@ -100,7 +112,29 @@ The input plugin exists because the alternative — injecting fake SDL key event
 — can only ever steer full-lock. MK64 steering is an 8-bit signed axis, and a
 policy that cannot hold a partial steering angle cannot hold a racing line.
 
+## Two more that cost time
+
+**6. MK64 puts an "OK ?" confirm after *every* selection.** It is **five** A
+presses from PLAYER SELECT to the track, not four. Four leaves you on MAP SELECT
+staring at a screen that looks like it is ignoring input — and it is not; it is
+waiting for the confirm you never sent. Cross-check any "the game is frozen"
+theory against `pad.polls`: if it keeps rising, the game is alive and reading
+you, and the bug is yours.
+
+**7. `M64CORE_STATE_SAVECOMPLETE` fires before the bytes reach disk.** The
+savestate is written on the core's worker thread, so right after the signal the
+file is a truncated gzip — 16 KiB standing in for a 16 MiB state. It exists, it
+has the right magic number, and it is useless. Wait until the file actually
+decompresses (`_await_complete_state_file`), not until the core says it is done.
+
+Related: **the frame callback is not a completion signal.** It runs inside
+`new_frame()`, *before* the core's `if (l_FrameAdvance) { g_rom_pause = 1; ... }`
+bookkeeping. Request the next frame in that window and the emulator thread eats
+the flag, pauses anyway, and never resumes — an intermittent hang that reads as
+a slow frame. Wait for `M64EMU_PAUSED` instead.
+
 ## Next
 
-Milestone 2: find the kart in RAM by savestate diffing rather than disassembly,
-which first needs the menus driven far enough to start a race.
+Milestone 3: `ram_hunt` — find the kart's position, speed and heading by
+diffing savestates across known motions rather than by disassembly. Expect N64
+fixed point, not IEEE floats.

@@ -15,6 +15,7 @@ PAUSE/ADVANCE_FRAME. The frame callback signals an Event so step() returns only
 once a frame has genuinely been emulated, rather than guessing with sleeps.
 """
 
+import gzip
 import os
 import threading
 import time
@@ -59,6 +60,9 @@ class MK64Env:
         # Turn off the 60 fps limiter: training wants frames as fast as the CPU
         # will give them. (Set after EXECUTE starts; see _start.)
         self.core.config_set("Core", "SaveStatePath", str(self.state_dir))
+        self.shot_dir = Path(__file__).resolve().parents[2] / "runs" / "shots"
+        self.shot_dir.mkdir(parents=True, exist_ok=True)
+        self.core.config_set("Core", "ScreenshotPath", str(self.shot_dir) + "/")
         self.core.config_set("Core", "OnScreenDisplay", False)
         # The Game Boy Camera capture backend defaults to "opencv", which
         # blocks on a camera that is not there and hangs ROM startup before
@@ -142,13 +146,62 @@ class MK64Env:
         if action:
             self.pad.set(**action)
         for _ in range(frames):
+            # Wait until the core has genuinely parked before asking for the
+            # next frame. The frame callback runs INSIDE new_frame(), before
+            # the core does its own `if (l_FrameAdvance) { g_rom_pause = 1;
+            # l_FrameAdvance = 0; }` bookkeeping. Fire advance_frame() in that
+            # window and the emulator thread immediately eats the flag we just
+            # set, pauses anyway, and nothing ever resumes it — an intermittent
+            # hang that looks like a slow frame. So the callback is a hint, not
+            # the completion signal; PAUSED is the completion signal.
+            self._await_paused()
             self._frame_evt.clear()
             self.core.advance_frame()
             if not self._frame_evt.wait(timeout=5.0):
                 raise m64.M64Error(
-                    f"frame did not advance (frame={self.frame}, polls={self.pad.polls}); "
+                    f"frame did not advance (frame={self.frame}, "
+                    f"polls={self.pad.polls}, state={self.core.emu_state()}); "
                     "core log:\n" + "\n".join(self.core.log[-10:]))
         return self.frame
+
+    def _await_complete_state_file(self, path, max_frames=240):
+        """Block until `path` is a whole, decompressable savestate."""
+        last = -1
+        for _ in range(max_frames):
+            if path.exists():
+                size = path.stat().st_size
+                if size == last and size > 0:
+                    try:
+                        with gzip.open(path, "rb") as fh:
+                            while fh.read(1 << 20):
+                                pass
+                        return size
+                    except OSError:
+                        pass            # still being written
+                last = size
+            self.step(1)
+        raise m64.M64Error(
+            f"savestate at {path} never finished writing "
+            f"(stuck at {last} bytes)")
+
+    def _pump(self, event, what, max_frames=120):
+        """Advance frames until the core signals `event`."""
+        for _ in range(max_frames):
+            if event.is_set():
+                return
+            self.step(1)
+        if not event.is_set():
+            raise m64.M64Error(f"{what} never completed within {max_frames} frames")
+
+    def _await_paused(self, timeout=5.0):
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            if self.core.emu_state() == m64.M64EMU_PAUSED:
+                return
+            time.sleep(0.0002)
+        raise m64.M64Error(
+            f"core never reported PAUSED (state={self.core.emu_state()}, "
+            f"frame={self.frame})")
 
     def run(self, frames, **action):
         """Hold one action for N frames — the usual way to skip menus."""
@@ -162,11 +215,19 @@ class MK64Env:
         path = self.state_dir / f"s{sid:06d}.st"
         before = self.frame
         self.core.save_state_to(path)
-        # A savestate is written by the emulator thread on the next frame edge,
-        # so step once to make sure it has actually landed on disk.
-        self.step(1)
-        if not path.exists():
-            raise m64.M64Error(f"savestate did not appear at {path}")
+        # Step frames until the core reports the write finished. Checking only
+        # that the file exists is not enough: it appears early and half-written
+        # (a 16 KiB stub for an 8 MiB machine), and loading it later silently
+        # gives you the wrong world.
+        self._pump(self.core.save_done, "savestate write")
+        if not self.core.save_ok:
+            raise m64.M64Error(f"core reported savestate failure for {path}")
+        # M64CORE_STATE_SAVECOMPLETE fires BEFORE the bytes are on disk, so the
+        # file is still a truncated gzip at this point ("Compressed file ended
+        # before the end-of-stream marker"). A stub like that loads as garbage
+        # or not at all, which is a horrible bug to meet later. Wait for the
+        # file to actually decompress.
+        self._await_complete_state_file(path)
         # The pad is part of the environment's state even though it lives
         # outside the emulator: restoring RAM but not the controller means the
         # settling frame replays a different input and the rollback is not exact.
@@ -177,13 +238,54 @@ class MK64Env:
         path, _, pads = self._states[sid]
         self.pad.restore(pads)
         self.core.load_state_from(path)
-        self.step(1)       # the load is applied on the next frame edge
+        self._pump(self.core.load_done, "savestate load")
+        if not self.core.load_ok:
+            raise m64.M64Error(f"core reported load failure for {path}")
+        return self.frame
+
+    def load_state_file(self, path, settle=2):
+        """Restore a savestate from disk — the way every episode begins.
+
+        The menus are walked exactly once (src/mk64/to_race.py); after that the
+        start line is just a file.
+        """
+        path = Path(path)
+        if not path.is_file():
+            raise FileNotFoundError(path)
+        self.pad.neutral()
+        self.core.load_state_from(path)
+        self._pump(self.core.load_done, f"load of {path.name}")
+        if not self.core.load_ok:
+            raise m64.M64Error(f"core refused savestate {path}")
+        self.step(settle)
         return self.frame
 
     def drop_state(self, sid):
         path, _, _ = self._states.pop(sid, (None, None, None))
         if path and path.exists():
             path.unlink()
+
+    # --- eyes ------------------------------------------------------------
+    def screenshot(self, name=None, settle=3):
+        """Grab what is on screen, as a PNG path.
+
+        Needed because the menus cannot be navigated blind, and it is the same
+        capture path stage 2's confidence overlay will draw on top of.
+        """
+        before = set(self.shot_dir.glob("*.png"))
+        self.core.take_screenshot()
+        for _ in range(settle):
+            self.step(1)
+            new = set(self.shot_dir.glob("*.png")) - before
+            if new:
+                shot = new.pop()
+                if name:
+                    dest = self.shot_dir / name
+                    shot.replace(dest)
+                    return dest
+                return shot
+        raise m64.M64Error("no screenshot appeared — does the video plugin "
+                           "support ReadScreen?")
 
     # --- memory ----------------------------------------------------------
     def ram(self):

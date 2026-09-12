@@ -13,6 +13,7 @@ belongs in env.py or an adapter, never in this file.
 import ctypes
 import os
 import struct
+import threading
 
 # --- m64p_types.h -----------------------------------------------------------
 
@@ -38,6 +39,8 @@ M64CORE_VIDEO_MODE = 2
 M64CORE_SAVESTATE_SLOT = 3
 M64CORE_SPEED_FACTOR = 4
 M64CORE_SPEED_LIMITER = 5
+M64CORE_STATE_LOADCOMPLETE = 10
+M64CORE_STATE_SAVECOMPLETE = 11
 
 M64EMU_STOPPED, M64EMU_RUNNING, M64EMU_PAUSED = 1, 2, 3
 
@@ -78,6 +81,14 @@ class Core:
         self._state_cb = STATE_CB(self._on_state)
         self._frame_cb = None
         self.frame = 0
+        # Savestates are written by the core's worker thread ("m64pwq"), not
+        # inline, so the file on disk is incomplete for a while after the
+        # command returns. The core tells us when it is done — listen, rather
+        # than sleeping and hoping.
+        self.save_done = threading.Event()
+        self.load_done = threading.Event()
+        self.save_ok = None
+        self.load_ok = None
 
         if config_dir is None:
             config_dir = os.path.expanduser("~/.config/mupen64plus")
@@ -97,7 +108,12 @@ class Core:
             print(msg)
 
     def _on_state(self, ctx, param, value):
-        pass
+        if param == M64CORE_STATE_SAVECOMPLETE:
+            self.save_ok = bool(value)
+            self.save_done.set()
+        elif param == M64CORE_STATE_LOADCOMPLETE:
+            self.load_ok = bool(value)
+            self.load_done.set()
 
     @property
     def log(self):
@@ -198,12 +214,21 @@ class Core:
 
     # --- savestates ------------------------------------------------------
     def save_state_to(self, path):
+        self.save_done.clear()
+        self.save_ok = None
         _check(self.lib.CoreDoCommand(ctypes.c_int(M64CMD_STATE_SAVE), ctypes.c_int(1),
                                       ctypes.c_char_p(str(path).encode())), "STATE_SAVE")
 
     def load_state_from(self, path):
+        self.load_done.clear()
+        self.load_ok = None
         _check(self.lib.CoreDoCommand(ctypes.c_int(M64CMD_STATE_LOAD), ctypes.c_int(0),
                                       ctypes.c_char_p(str(path).encode())), "STATE_LOAD")
+
+    def take_screenshot(self):
+        """Queue a screenshot; the core writes it on the next rendered frame."""
+        _check(self.lib.CoreDoCommand(ctypes.c_int(M64CMD_TAKE_NEXT_SCREENSHOT),
+                                      ctypes.c_int(0), None), "TAKE_NEXT_SCREENSHOT")
 
     # --- memory ----------------------------------------------------------
     def rdram(self):

@@ -25,7 +25,7 @@ SHM_SIZE = struct.calcsize(SHM_FMT)
 
 
 def buttons(steer=0.0, accel=False, brake=False, hop=False, item=False,
-            start=False, y=0.0):
+            start=False, y=0.0, up=False, down=False, left=False, right=False):
     """Pack a kart action into a raw BUTTONS word.
 
     steer/y are -1.0..+1.0 and map onto the signed 8-bit axes. The N64 stick
@@ -38,6 +38,12 @@ def buttons(steer=0.0, accel=False, brake=False, hop=False, item=False,
     if hop:   v |= 1 << R_TRIG
     if item:  v |= 1 << Z_TRIG
     if start: v |= 1 << START
+    # D-pad: menus are far more reliable on the pad than on the analog stick,
+    # which needs to cross a deadzone and can register as two steps.
+    if up:    v |= 1 << U_DPAD
+    if down:  v |= 1 << D_DPAD
+    if left:  v |= 1 << L_DPAD
+    if right: v |= 1 << R_DPAD
 
     def axis(f):
         a = int(round(max(-1.0, min(1.0, f)) * 80))
@@ -60,6 +66,10 @@ def unpack(value):
         "hop":   bool(value >> R_TRIG & 1),
         "item":  bool(value >> Z_TRIG & 1),
         "start": bool(value >> START & 1),
+        "up":    bool(value >> U_DPAD & 1),
+        "down":  bool(value >> D_DPAD & 1),
+        "left":  bool(value >> L_DPAD & 1),
+        "right": bool(value >> R_DPAD & 1),
     }
 
 
