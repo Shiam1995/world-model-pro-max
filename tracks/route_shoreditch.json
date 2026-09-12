@@ -1,0 +1,456 @@
+{
+ "area": "shoreditch",
+ "centre": {
+  "lat": 51.525,
+  "lon": -0.078
+ },
+ "streets": [
+  "Great Eastern Street",
+  "Curtain Road",
+  "Holywell Lane",
+  "Bethnal Green Road",
+  "Ebor Street",
+  "Redchurch Street",
+  "Chance Street",
+  "Camlet Street",
+  "Ligonier Street",
+  "Navarre Street",
+  "Boundary Street",
+  "Calvert Avenue",
+  "Shoreditch High Street",
+  "Bateman's Row"
+ ],
+ "box_side_m": 400.0,
+ "closed": true,
+ "lap_length_m": 1220.9,
+ "snapped": true,
+ "snap_mode": "edge",
+ "bbox": {
+  "north": 51.526796622349984,
+  "south": 51.52320337765001,
+  "west": -0.08088765674619113,
+  "east": -0.07511234325380887
+ },
+ "waypoints": [
+  {
+   "i": 0,
+   "lat": 51.524582,
+   "lon": -0.080718,
+   "heading": 133.5,
+   "street": "Great Eastern Street"
+  },
+  {
+   "i": 1,
+   "lat": 51.524524,
+   "lon": -0.080619,
+   "heading": 163.9,
+   "street": "Great Eastern Street"
+  },
+  {
+   "i": 2,
+   "lat": 51.523949,
+   "lon": -0.080352,
+   "heading": 183.4,
+   "street": "Curtain Road"
+  },
+  {
+   "i": 3,
+   "lat": 51.523833,
+   "lon": -0.080363,
+   "heading": 184.3,
+   "street": "Curtain Road"
+  },
+  {
+   "i": 4,
+   "lat": 51.523792,
+   "lon": -0.080368,
+   "heading": 118.2,
+   "street": "Curtain Road"
+  },
+  {
+   "i": 5,
+   "lat": 51.523685,
+   "lon": -0.080049,
+   "heading": 85.3,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 6,
+   "lat": 51.523699,
+   "lon": -0.07977,
+   "heading": 84.7,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 7,
+   "lat": 51.523716,
+   "lon": -0.079492,
+   "heading": 87.3,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 8,
+   "lat": 51.523723,
+   "lon": -0.079221,
+   "heading": 85.6,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 9,
+   "lat": 51.523736,
+   "lon": -0.07895,
+   "heading": 85.9,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 10,
+   "lat": 51.523749,
+   "lon": -0.07868,
+   "heading": 85.5,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 11,
+   "lat": 51.523762,
+   "lon": -0.078401,
+   "heading": 84.6,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 12,
+   "lat": 51.523777,
+   "lon": -0.078151,
+   "heading": 84.0,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 13,
+   "lat": 51.523793,
+   "lon": -0.077906,
+   "heading": 84.1,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 14,
+   "lat": 51.523809,
+   "lon": -0.07766,
+   "heading": 130.0,
+   "street": "Holywell Lane"
+  },
+  {
+   "i": 15,
+   "lat": 51.523594,
+   "lon": -0.077248,
+   "heading": 82.1,
+   "street": "Bethnal Green Road"
+  },
+  {
+   "i": 16,
+   "lat": 51.523606,
+   "lon": -0.07711,
+   "heading": 77.3,
+   "street": "Bethnal Green Road"
+  },
+  {
+   "i": 17,
+   "lat": 51.523644,
+   "lon": -0.076839,
+   "heading": 90.7,
+   "street": "Bethnal Green Road"
+  },
+  {
+   "i": 18,
+   "lat": 51.523642,
+   "lon": -0.076589,
+   "heading": 90.6,
+   "street": "Bethnal Green Road"
+  },
+  {
+   "i": 19,
+   "lat": 51.52364,
+   "lon": -0.076354,
+   "heading": 90.0,
+   "street": "Bethnal Green Road"
+  },
+  {
+   "i": 20,
+   "lat": 51.52364,
+   "lon": -0.07613,
+   "heading": 29.0,
+   "street": "Bethnal Green Road"
+  },
+  {
+   "i": 21,
+   "lat": 51.523993,
+   "lon": -0.075815,
+   "heading": 349.5,
+   "street": "Ebor Street"
+  },
+  {
+   "i": 22,
+   "lat": 51.524036,
+   "lon": -0.075828,
+   "heading": 30.0,
+   "street": "Ebor Street"
+  },
+  {
+   "i": 23,
+   "lat": 51.524375,
+   "lon": -0.075514,
+   "heading": 81.9,
+   "street": "Redchurch Street"
+  },
+  {
+   "i": 24,
+   "lat": 51.524392,
+   "lon": -0.075314,
+   "heading": 54.3,
+   "street": "Redchurch Street"
+  },
+  {
+   "i": 25,
+   "lat": 51.524473,
+   "lon": -0.075134,
+   "heading": 350.5,
+   "street": "Chance Street"
+  },
+  {
+   "i": 26,
+   "lat": 51.524609,
+   "lon": -0.07517,
+   "heading": 350.5,
+   "street": "Chance Street"
+  },
+  {
+   "i": 27,
+   "lat": 51.524775,
+   "lon": -0.075215,
+   "heading": 355.0,
+   "street": "Chance Street"
+  },
+  {
+   "i": 28,
+   "lat": 51.524942,
+   "lon": -0.075238,
+   "heading": 356.0,
+   "street": "Camlet Street"
+  },
+  {
+   "i": 29,
+   "lat": 51.525083,
+   "lon": -0.075254,
+   "heading": 276.8,
+   "street": "Camlet Street"
+  },
+  {
+   "i": 30,
+   "lat": 51.525134,
+   "lon": -0.075944,
+   "heading": 355.2,
+   "street": "Ligonier Street"
+  },
+  {
+   "i": 31,
+   "lat": 51.525229,
+   "lon": -0.075957,
+   "heading": 326.1,
+   "street": "Ligonier Street"
+  },
+  {
+   "i": 32,
+   "lat": 51.525496,
+   "lon": -0.076244,
+   "heading": 235.7,
+   "street": "Navarre Street"
+  },
+  {
+   "i": 33,
+   "lat": 51.525439,
+   "lon": -0.076377,
+   "heading": 311.3,
+   "street": "Navarre Street"
+  },
+  {
+   "i": 34,
+   "lat": 51.525566,
+   "lon": -0.076609,
+   "heading": 357.3,
+   "street": "Boundary Street"
+  },
+  {
+   "i": 35,
+   "lat": 51.525736,
+   "lon": -0.076622,
+   "heading": 357.3,
+   "street": "Boundary Street"
+  },
+  {
+   "i": 36,
+   "lat": 51.5259,
+   "lon": -0.076635,
+   "heading": 358.6,
+   "street": "Boundary Street"
+  },
+  {
+   "i": 37,
+   "lat": 51.526055,
+   "lon": -0.076641,
+   "heading": 336.9,
+   "street": "Boundary Street"
+  },
+  {
+   "i": 38,
+   "lat": 51.526333,
+   "lon": -0.076831,
+   "heading": 282.4,
+   "street": "Calvert Avenue"
+  },
+  {
+   "i": 39,
+   "lat": 51.526364,
+   "lon": -0.077055,
+   "heading": 282.4,
+   "street": "Calvert Avenue"
+  },
+  {
+   "i": 40,
+   "lat": 51.526398,
+   "lon": -0.077303,
+   "heading": 282.4,
+   "street": "Calvert Avenue"
+  },
+  {
+   "i": 41,
+   "lat": 51.526434,
+   "lon": -0.07757,
+   "heading": 281.6,
+   "street": "Calvert Avenue"
+  },
+  {
+   "i": 42,
+   "lat": 51.526469,
+   "lon": -0.077846,
+   "heading": 223.6,
+   "street": "Calvert Avenue"
+  },
+  {
+   "i": 43,
+   "lat": 51.526343,
+   "lon": -0.078039,
+   "heading": 178.7,
+   "street": "Shoreditch High Street"
+  },
+  {
+   "i": 44,
+   "lat": 51.526292,
+   "lon": -0.078037,
+   "heading": 177.6,
+   "street": "Shoreditch High Street"
+  },
+  {
+   "i": 45,
+   "lat": 51.526245,
+   "lon": -0.078034,
+   "heading": 207.8,
+   "street": "Shoreditch High Street"
+  },
+  {
+   "i": 46,
+   "lat": 51.525316,
+   "lon": -0.078822,
+   "heading": 270.2,
+   "street": "Bateman's Row"
+  },
+  {
+   "i": 47,
+   "lat": 51.525316,
+   "lon": -0.079047,
+   "heading": 269.3,
+   "street": "Bateman's Row"
+  },
+  {
+   "i": 48,
+   "lat": 51.525315,
+   "lon": -0.079276,
+   "heading": 269.4,
+   "street": "Bateman's Row"
+  },
+  {
+   "i": 49,
+   "lat": 51.525313,
+   "lon": -0.079511,
+   "heading": 269.5,
+   "street": "Bateman's Row"
+  },
+  {
+   "i": 50,
+   "lat": 51.525312,
+   "lon": -0.079735,
+   "heading": 269.5,
+   "street": "Bateman's Row"
+  },
+  {
+   "i": 51,
+   "lat": 51.525311,
+   "lon": -0.079939,
+   "heading": 269.5,
+   "street": "Bateman's Row"
+  },
+  {
+   "i": 52,
+   "lat": 51.52531,
+   "lon": -0.080097,
+   "heading": 269.5,
+   "street": "Bateman's Row"
+  },
+  {
+   "i": 53,
+   "lat": 51.525309,
+   "lon": -0.080191,
+   "heading": 214.1,
+   "street": "Bateman's Row"
+  },
+  {
+   "i": 54,
+   "lat": 51.525195,
+   "lon": -0.080315,
+   "heading": 179.2,
+   "street": "Curtain Road"
+  },
+  {
+   "i": 55,
+   "lat": 51.525032,
+   "lon": -0.080311,
+   "heading": 177.4,
+   "street": "Curtain Road"
+  },
+  {
+   "i": 56,
+   "lat": 51.524893,
+   "lon": -0.080301,
+   "heading": 214.2,
+   "street": "Curtain Road"
+  },
+  {
+   "i": 57,
+   "lat": 51.524554,
+   "lon": -0.08067,
+   "heading": 313.4,
+   "street": "Great Eastern Street"
+  },
+  {
+   "i": 58,
+   "lat": 51.524581,
+   "lon": -0.080715,
+   "heading": 313.4,
+   "street": "Great Eastern Street"
+  },
+  {
+   "i": 59,
+   "lat": 51.524592,
+   "lon": -0.080734,
+   "heading": 133.4,
+   "street": "Great Eastern Street"
+  }
+ ]
+}

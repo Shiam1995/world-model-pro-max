@@ -21,10 +21,12 @@ class MK64Adapter:
                                     spacing=spacing, smooth_window=smooth_window)
         self.env = env
         self.prev_s = None
+        self.hint = None
 
     def reset(self, state_path):
         self.env.load_state_file(state_path)
         self.prev_s = None
+        self.hint = None
         return self.observe()
 
     def raw(self):
@@ -32,8 +34,9 @@ class MK64Adapter:
 
     def observe(self, state=None):
         state = state or self.raw()
-        obs, s = observe(state, self.track, self.prev_s)
+        obs, s, i = observe(state, self.track, self.prev_s, hint=self.hint)
         self.prev_s = s
+        self.hint = i
         return obs
 
     def step(self, frames=1, **action):

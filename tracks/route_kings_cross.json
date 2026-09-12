@@ -1,0 +1,453 @@
+{
+ "area": "kings_cross",
+ "centre": {
+  "lat": 51.531,
+  "lon": -0.1195
+ },
+ "streets": [
+  "Gray's Inn Road",
+  "St Chad's Street",
+  "Britannia Street",
+  "Wicklow Street",
+  "Lorenzo Street",
+  "Pentonville Road",
+  "Killick Street",
+  "Collier Street",
+  "Northdown Street",
+  "Caledonian Road",
+  "Keystone Crescent"
+ ],
+ "box_side_m": 400.0,
+ "closed": true,
+ "lap_length_m": 1192.5,
+ "snapped": true,
+ "snap_mode": "edge",
+ "bbox": {
+  "north": 51.532796622349984,
+  "south": 51.52920337765001,
+  "west": -0.12238803731508988,
+  "east": -0.11661196268491011
+ },
+ "waypoints": [
+  {
+   "i": 0,
+   "lat": 51.530713,
+   "lon": -0.122221,
+   "heading": 122.3,
+   "street": "Gray's Inn Road"
+  },
+  {
+   "i": 1,
+   "lat": 51.530689,
+   "lon": -0.12216,
+   "heading": 119.5,
+   "street": "Gray's Inn Road"
+  },
+  {
+   "i": 2,
+   "lat": 51.530644,
+   "lon": -0.122033,
+   "heading": 117.2,
+   "street": "Gray's Inn Road"
+  },
+  {
+   "i": 3,
+   "lat": 51.53059,
+   "lon": -0.121863,
+   "heading": 145.6,
+   "street": "Gray's Inn Road"
+  },
+  {
+   "i": 4,
+   "lat": 51.529996,
+   "lon": -0.121209,
+   "heading": 0.0,
+   "street": "St Chad's Street"
+  },
+  {
+   "i": 5,
+   "lat": 51.529996,
+   "lon": -0.121209,
+   "heading": 0.0,
+   "street": "St Chad's Street"
+  },
+  {
+   "i": 6,
+   "lat": 51.529996,
+   "lon": -0.121209,
+   "heading": 55.9,
+   "street": "St Chad's Street"
+  },
+  {
+   "i": 7,
+   "lat": 51.530035,
+   "lon": -0.121116,
+   "heading": 105.0,
+   "street": "St Chad's Street"
+  },
+  {
+   "i": 8,
+   "lat": 51.529934,
+   "lon": -0.120507,
+   "heading": 154.4,
+   "street": "Gray's Inn Road"
+  },
+  {
+   "i": 9,
+   "lat": 51.529821,
+   "lon": -0.120421,
+   "heading": 154.4,
+   "street": "Gray's Inn Road"
+  },
+  {
+   "i": 10,
+   "lat": 51.529704,
+   "lon": -0.12033,
+   "heading": 125.3,
+   "street": "Gray's Inn Road"
+  },
+  {
+   "i": 11,
+   "lat": 51.529478,
+   "lon": -0.119818,
+   "heading": 27.0,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 12,
+   "lat": 51.52988,
+   "lon": -0.119488,
+   "heading": 154.7,
+   "street": "Wicklow Street"
+  },
+  {
+   "i": 13,
+   "lat": 51.529725,
+   "lon": -0.119371,
+   "heading": 117.9,
+   "street": "Wicklow Street"
+  },
+  {
+   "i": 14,
+   "lat": 51.529653,
+   "lon": -0.119151,
+   "heading": 66.3,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 15,
+   "lat": 51.529718,
+   "lon": -0.118913,
+   "heading": 66.3,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 16,
+   "lat": 51.529787,
+   "lon": -0.118659,
+   "heading": 66.3,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 17,
+   "lat": 51.529858,
+   "lon": -0.1184,
+   "heading": 66.6,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 18,
+   "lat": 51.529924,
+   "lon": -0.118152,
+   "heading": 66.8,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 19,
+   "lat": 51.529988,
+   "lon": -0.117913,
+   "heading": 66.8,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 20,
+   "lat": 51.53005,
+   "lon": -0.117681,
+   "heading": 66.8,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 21,
+   "lat": 51.530111,
+   "lon": -0.117453,
+   "heading": 66.8,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 22,
+   "lat": 51.530171,
+   "lon": -0.117227,
+   "heading": 54.3,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 23,
+   "lat": 51.530254,
+   "lon": -0.11704,
+   "heading": 43.1,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 24,
+   "lat": 51.53027,
+   "lon": -0.117017,
+   "heading": 9.4,
+   "street": "Britannia Street"
+  },
+  {
+   "i": 25,
+   "lat": 51.530577,
+   "lon": -0.116935,
+   "heading": 7.9,
+   "street": "Lorenzo Street"
+  },
+  {
+   "i": 26,
+   "lat": 51.530677,
+   "lon": -0.116913,
+   "heading": 359.9,
+   "street": "Lorenzo Street"
+  },
+  {
+   "i": 27,
+   "lat": 51.53077,
+   "lon": -0.116913,
+   "heading": 354.0,
+   "street": "Lorenzo Street"
+  },
+  {
+   "i": 28,
+   "lat": 51.53091,
+   "lon": -0.116937,
+   "heading": 356.2,
+   "street": "Lorenzo Street"
+  },
+  {
+   "i": 29,
+   "lat": 51.531064,
+   "lon": -0.116953,
+   "heading": 300.8,
+   "street": "Lorenzo Street"
+  },
+  {
+   "i": 30,
+   "lat": 51.531156,
+   "lon": -0.117201,
+   "heading": 262.9,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 31,
+   "lat": 51.531138,
+   "lon": -0.117429,
+   "heading": 263.0,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 32,
+   "lat": 51.531121,
+   "lon": -0.117653,
+   "heading": 263.1,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 33,
+   "lat": 51.531107,
+   "lon": -0.117846,
+   "heading": 326.5,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 34,
+   "lat": 51.531515,
+   "lon": -0.118281,
+   "heading": 352.9,
+   "street": "Killick Street"
+  },
+  {
+   "i": 35,
+   "lat": 51.531683,
+   "lon": -0.118315,
+   "heading": 352.9,
+   "street": "Killick Street"
+  },
+  {
+   "i": 36,
+   "lat": 51.531851,
+   "lon": -0.118349,
+   "heading": 14.6,
+   "street": "Killick Street"
+  },
+  {
+   "i": 37,
+   "lat": 51.532193,
+   "lon": -0.118206,
+   "heading": 261.0,
+   "street": "Collier Street"
+  },
+  {
+   "i": 38,
+   "lat": 51.532179,
+   "lon": -0.118349,
+   "heading": 262.7,
+   "street": "Collier Street"
+  },
+  {
+   "i": 39,
+   "lat": 51.532162,
+   "lon": -0.118554,
+   "heading": 263.4,
+   "street": "Collier Street"
+  },
+  {
+   "i": 40,
+   "lat": 51.532145,
+   "lon": -0.118792,
+   "heading": 263.4,
+   "street": "Collier Street"
+  },
+  {
+   "i": 41,
+   "lat": 51.532126,
+   "lon": -0.119057,
+   "heading": 304.1,
+   "street": "Collier Street"
+  },
+  {
+   "i": 42,
+   "lat": 51.532341,
+   "lon": -0.119567,
+   "heading": 353.6,
+   "street": "Northdown Street"
+  },
+  {
+   "i": 43,
+   "lat": 51.532349,
+   "lon": -0.119568,
+   "heading": 296.7,
+   "street": "Northdown Street"
+  },
+  {
+   "i": 44,
+   "lat": 51.532492,
+   "lon": -0.120026,
+   "heading": 193.4,
+   "street": "Caledonian Road"
+  },
+  {
+   "i": 45,
+   "lat": 51.532087,
+   "lon": -0.120181,
+   "heading": 313.4,
+   "street": "Keystone Crescent"
+  },
+  {
+   "i": 46,
+   "lat": 51.532156,
+   "lon": -0.1203,
+   "heading": 243.4,
+   "street": "Keystone Crescent"
+  },
+  {
+   "i": 47,
+   "lat": 51.532068,
+   "lon": -0.120585,
+   "heading": 211.5,
+   "street": "Caledonian Road"
+  },
+  {
+   "i": 48,
+   "lat": 51.531911,
+   "lon": -0.120738,
+   "heading": 200.0,
+   "street": "Caledonian Road"
+  },
+  {
+   "i": 49,
+   "lat": 51.531769,
+   "lon": -0.120822,
+   "heading": 191.6,
+   "street": "Caledonian Road"
+  },
+  {
+   "i": 50,
+   "lat": 51.531648,
+   "lon": -0.120862,
+   "heading": 191.2,
+   "street": "Caledonian Road"
+  },
+  {
+   "i": 51,
+   "lat": 51.531485,
+   "lon": -0.120913,
+   "heading": 211.9,
+   "street": "Caledonian Road"
+  },
+  {
+   "i": 52,
+   "lat": 51.530853,
+   "lon": -0.121545,
+   "heading": 262.6,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 53,
+   "lat": 51.530845,
+   "lon": -0.12165,
+   "heading": 262.6,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 54,
+   "lat": 51.530839,
+   "lon": -0.121719,
+   "heading": 262.6,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 55,
+   "lat": 51.530834,
+   "lon": -0.121788,
+   "heading": 262.2,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 56,
+   "lat": 51.530823,
+   "lon": -0.121914,
+   "heading": 262.8,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 57,
+   "lat": 51.530811,
+   "lon": -0.122064,
+   "heading": 208.3,
+   "street": "Pentonville Road"
+  },
+  {
+   "i": 58,
+   "lat": 51.530692,
+   "lon": -0.122168,
+   "heading": 302.6,
+   "street": "Gray's Inn Road"
+  },
+  {
+   "i": 59,
+   "lat": 51.53071,
+   "lon": -0.122213,
+   "heading": 302.6,
+   "street": "Gray's Inn Road"
+  }
+ ]
+}

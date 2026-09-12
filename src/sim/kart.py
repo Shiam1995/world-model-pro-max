@@ -44,7 +44,10 @@ class Physics:
     turn_speed_falloff: float = 0.55  # how much steering authority is lost fast
     grip: float = 1.0               # 1 = no sideslip; < 1 lets the kart drift
     off_road: float = 0.35          # speed multiplier off the track
-    half_width: float = 130.0       # track half-width in world units
+    # Measured, not guessed: driving straight off turn one, the real kart held
+    # 5.14 speed at lateral 70.9 and had collapsed to 3.64 by 75.2. The road
+    # edge is therefore around 72, not the 130 originally assumed.
+    half_width: float = 72.0
     ticks_per_frame: int = 2        # MK64 runs two physics ticks per frame
     #: Measured acceleration per FRAME as a function of speed, taken straight
     #: from an emulator trace (src/sim/calibrate.py). When present this replaces
@@ -53,6 +56,21 @@ class Physics:
     #: edge, which is what a wrong shape looks like). Measuring a(v) directly
     #: makes the match exact by construction.
     accel_table: tuple = ()
+    #: Measured |dyaw| per FRAME at full lock, as a function of speed, taken
+    #: from emulator traces. This replaces turn_rate/turn_speed_falloff and the
+    #: invented low-speed ramp. That ramp was the single thing that broke
+    #: sim-to-real: it made the sim kart unable to steer below ~1.4 speed, so a
+    #: policy could carry a large constant steering bias for free. The real kart
+    #: turns 0.0285 rad/frame at speed 0.2, and that bias drove it straight off
+    #: the road in the first two seconds.
+    turn_table: tuple = ()
+    #: Measured steering response: stick deflection -> fraction of full lock.
+    #: MK64's steering is strongly NON-linear with a deadzone — 0.15 produces
+    #: exactly zero yaw rate and 0.30 produces 5% of full lock. Assuming it was
+    #: linear is what broke sim-to-real: a policy trained on a linear model
+    #: steers with gentle +-0.27 corrections, which do almost nothing on the
+    #: real kart, and it drifts wide into the barrier every time.
+    steer_response: tuple = ()
 
     @classmethod
     def calibrated(cls, **overrides):
@@ -60,7 +78,11 @@ class Physics:
         root = Path(__file__).resolve().parents[2]
         tbl = json.loads((root / "sim/accel_table.json").read_text())
         cal = json.loads((root / "sim/calibration.json").read_text())
+        turn = json.loads((root / "sim/turn_table.json").read_text())
+        sresp = json.loads((root / "sim/steer_response.json").read_text())
         kw = dict(accel_table=tuple(map(tuple, tbl)),
+                  turn_table=tuple(map(tuple, turn)),
+                  steer_response=tuple(map(tuple, sresp)),
                   top_speed=float(cal["real_top_speed"]),
                   turn_rate=float(cal["turn_rate"]),
                   turn_speed_falloff=float(cal["turn_speed_falloff"]),
@@ -95,6 +117,9 @@ class KartSim:
         self.speed = np.zeros(n)
         self.s = np.zeros(n)
         self.prev_s = np.zeros(n)
+        #: Last known checkpoint per kart. Projection is searched in a window
+        #: around this rather than globally — see _project().
+        self.cp = np.zeros(n, dtype=int)
         self.alive = np.ones(n, dtype=bool)
         self.ticks = 0
 
@@ -112,6 +137,7 @@ class KartSim:
         self.speed[:] = 0.0
         self.alive[:] = True
         self.ticks = 0
+        self.cp[:] = start_cp
         self.s = self._project()[1]
         self.prev_s = self.s.copy()
         return self.observe()
@@ -150,11 +176,19 @@ class KartSim:
                                   self.speed)
             self.speed = np.clip(self.speed, 0.0, p.top_speed * 1.5)
 
-            # Steering authority falls off with speed, which is why a kart
-            # understeers into a corner taken too fast.
-            auth = 1.0 - p.turn_speed_falloff * (self.speed / max(p.top_speed, 1e-6))
-            self.yaw += steer * p.turn_rate * np.clip(auth, 0.05, 1.0) * \
-                np.clip(self.speed / (0.25 * p.top_speed), 0, 1)
+            if p.turn_table:
+                tt = np.asarray(p.turn_table, dtype=float)
+                rate = np.interp(self.speed, tt[:, 0], tt[:, 1]) / p.ticks_per_frame
+                if p.steer_response:
+                    sr = np.asarray(p.steer_response, dtype=float)
+                    eff = np.interp(np.abs(steer), sr[:, 0], sr[:, 1]) * np.sign(steer)
+                else:
+                    eff = steer
+                self.yaw += eff * rate
+            else:
+                auth = 1.0 - p.turn_speed_falloff * (self.speed / max(p.top_speed, 1e-6))
+                self.yaw += steer * p.turn_rate * np.clip(auth, 0.05, 1.0) * \
+                    np.clip(self.speed / (0.25 * p.top_speed), 0, 1)
 
             self.xz += np.stack([np.sin(self.yaw), np.cos(self.yaw)], axis=1) \
                 * self.speed[:, None]
@@ -165,9 +199,26 @@ class KartSim:
         return self.observe()
 
     # --- track queries (vectorised projection) ---------------------------
-    def _project(self):
-        d = self.xz[:, None, :] - self.track.xz[None, :, :]
-        i = np.argmin(np.einsum("nkj,nkj->nk", d, d), axis=1)
+    #: How far forward/back of the last checkpoint to look. A lap is a loop, so
+    #: two distant parts of the track can be physically adjacent: at Luigi
+    #: Raceway the start straight passes within metres of the return leg. A
+    #: global nearest-checkpoint search flips between cp 2 and cp 50 there, and
+    #: each flip looks like thousands of units of progress. An ES policy found
+    #: that immediately and learned to park in the ambiguous zone farming the
+    #: jumps — 16.5 laps in 900 frames, when 0.8 is the physical maximum.
+    #: Searching locally makes that impossible to express.
+    LOOK_BACK, LOOK_FWD = 3, 12
+
+    def _project(self, update=True):
+        n_cp = len(self.track.xz)
+        offs = np.arange(-self.LOOK_BACK, self.LOOK_FWD + 1)
+        idx = (self.cp[:, None] + offs[None, :]) % n_cp          # (N, W)
+        cand = self.track.xz[idx]                                 # (N, W, 2)
+        d = cand - self.xz[:, None, :]
+        k = np.argmin(np.einsum("nwj,nwj->nw", d, d), axis=1)
+        i = idx[np.arange(len(idx)), k]
+        if update:
+            self.cp = i
         t = self.track.tangent[i]
         rel = self.xz - self.track.xz[i]
         along = np.einsum("nj,nj->n", rel, t)
@@ -178,7 +229,12 @@ class KartSim:
         d = self.s - self.prev_s
         half = self.track.length / 2
         d = np.where(d < -half, d + self.track.length, d)
-        return np.where(d > half, d - self.track.length, d)
+        d = np.where(d > half, d - self.track.length, d)
+        # Belt and braces: nothing can advance further in one frame than the
+        # kart can physically travel. Any larger value is a projection artefact,
+        # and paying it out is how the first policy learned to cheat.
+        cap = self.p.top_speed * self.p.ticks_per_frame * 1.5
+        return np.clip(d, -cap, cap)
 
     def observe(self):
         """The same ten numbers as src/obs/track.py, computed for N karts."""

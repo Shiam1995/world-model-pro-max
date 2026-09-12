@@ -32,6 +32,15 @@ class LapSearch:
         self.lateral_weight = lateral_weight
         self.speed_weight = speed_weight
 
+    #: Projection hint, so the search cannot be fooled by the start straight
+    #: sitting next to the return leg (see Track.LOOK_BACK).
+    hint = None
+
+    def _project(self, pos):
+        i, s, lat = self.track.project(pos, hint=self.hint)
+        self.hint = i
+        return i, s, lat
+
     def _progress(self, s_from, s_to):
         """Arc length gained, handling the wrap at the finish line."""
         d = s_to - s_from
@@ -42,7 +51,7 @@ class LapSearch:
         return d
 
     def score(self, s_start, state):
-        _, s_end, lat = self.track.project(state["pos"])
+        _, s_end, lat = self.track.project(state["pos"], hint=self.hint)
         gain = self._progress(s_start, s_end)
         # Off the line is where the walls are. A soft band keeps the search on
         # the road without forbidding a racing line inside it.
@@ -67,8 +76,9 @@ class LapSearch:
         env.load_state_file(state_path)
 
         st = player.read(env)
-        lap0 = st["lapCount"]
-        _, s, _ = self.track.project(st["pos"])
+        # -1 while sitting on the line, 0 once it is crossed. Compare against 0.
+        lap0 = max(0, st["lapCount"])
+        _, s, _ = self._project(st["pos"])
         sid = env.save_state()
         total = 0.0
         stuck = 0
@@ -93,7 +103,7 @@ class LapSearch:
             sid = env.save_state()
 
             st = player.read(env)
-            _, s, lat = self.track.project(st["pos"])
+            _, s, lat = self._project(st["pos"])
             total += gain
             stuck = stuck + 1 if gain < 20 else 0
 

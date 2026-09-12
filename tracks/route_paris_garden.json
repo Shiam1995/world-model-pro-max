@@ -1,0 +1,453 @@
+{
+ "area": "paris_garden",
+ "centre": {
+  "lat": 51.5045,
+  "lon": -0.1015
+ },
+ "streets": [
+  "Nelson Square",
+  "Union Street",
+  "Great Suffolk Street",
+  "Copperfield Street",
+  "Ewer Street",
+  "Lavington Street",
+  "Farnham Place",
+  "Price's Street",
+  "Bear Lane",
+  "Treveris Street",
+  "Chancel Street"
+ ],
+ "box_side_m": 400.0,
+ "closed": true,
+ "lap_length_m": 1252.6,
+ "snapped": true,
+ "snap_mode": "edge",
+ "bbox": {
+  "north": 51.506296622349986,
+  "south": 51.502703377650015,
+  "west": -0.10438635746428478,
+  "east": -0.09861364253571524
+ },
+ "waypoints": [
+  {
+   "i": 0,
+   "lat": 51.503209,
+   "lon": -0.103954,
+   "heading": 0.0,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 1,
+   "lat": 51.503209,
+   "lon": -0.103954,
+   "heading": 209.6,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 2,
+   "lat": 51.503202,
+   "lon": -0.10396,
+   "heading": 29.6,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 3,
+   "lat": 51.503209,
+   "lon": -0.103954,
+   "heading": 75.4,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 4,
+   "lat": 51.503232,
+   "lon": -0.103812,
+   "heading": 92.1,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 5,
+   "lat": 51.503226,
+   "lon": -0.103551,
+   "heading": 92.1,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 6,
+   "lat": 51.503219,
+   "lon": -0.103272,
+   "heading": 92.1,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 7,
+   "lat": 51.503213,
+   "lon": -0.102994,
+   "heading": 77.9,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 8,
+   "lat": 51.50325,
+   "lon": -0.102715,
+   "heading": 56.4,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 9,
+   "lat": 51.503329,
+   "lon": -0.102525,
+   "heading": 35.3,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 10,
+   "lat": 51.503635,
+   "lon": -0.102178,
+   "heading": 91.3,
+   "street": "Union Street"
+  },
+  {
+   "i": 11,
+   "lat": 51.503631,
+   "lon": -0.101899,
+   "heading": 132.2,
+   "street": "Union Street"
+  },
+  {
+   "i": 12,
+   "lat": 51.503327,
+   "lon": -0.10136,
+   "heading": 171.6,
+   "street": "Great Suffolk Street"
+  },
+  {
+   "i": 13,
+   "lat": 51.503219,
+   "lon": -0.101335,
+   "heading": 139.2,
+   "street": "Great Suffolk Street"
+  },
+  {
+   "i": 14,
+   "lat": 51.503085,
+   "lon": -0.101149,
+   "heading": 87.8,
+   "street": "Copperfield Street"
+  },
+  {
+   "i": 15,
+   "lat": 51.503091,
+   "lon": -0.100885,
+   "heading": 88.9,
+   "street": "Copperfield Street"
+  },
+  {
+   "i": 16,
+   "lat": 51.503094,
+   "lon": -0.100611,
+   "heading": 89.5,
+   "street": "Copperfield Street"
+  },
+  {
+   "i": 17,
+   "lat": 51.503096,
+   "lon": -0.100339,
+   "heading": 89.5,
+   "street": "Copperfield Street"
+  },
+  {
+   "i": 18,
+   "lat": 51.503097,
+   "lon": -0.100089,
+   "heading": 92.1,
+   "street": "Copperfield Street"
+  },
+  {
+   "i": 19,
+   "lat": 51.503092,
+   "lon": -0.09986,
+   "heading": 92.8,
+   "street": "Copperfield Street"
+  },
+  {
+   "i": 20,
+   "lat": 51.503085,
+   "lon": -0.099639,
+   "heading": 12.2,
+   "street": "Copperfield Street"
+  },
+  {
+   "i": 21,
+   "lat": 51.50372,
+   "lon": -0.099418,
+   "heading": 89.1,
+   "street": "Union Street"
+  },
+  {
+   "i": 22,
+   "lat": 51.503722,
+   "lon": -0.099204,
+   "heading": 89.1,
+   "street": "Union Street"
+  },
+  {
+   "i": 23,
+   "lat": 51.503724,
+   "lon": -0.098999,
+   "heading": 89.1,
+   "street": "Union Street"
+  },
+  {
+   "i": 24,
+   "lat": 51.503725,
+   "lon": -0.098808,
+   "heading": 17.0,
+   "street": "Union Street"
+  },
+  {
+   "i": 25,
+   "lat": 51.503959,
+   "lon": -0.098693,
+   "heading": 350.1,
+   "street": "Ewer Street"
+  },
+  {
+   "i": 26,
+   "lat": 51.504085,
+   "lon": -0.098728,
+   "heading": 348.0,
+   "street": "Ewer Street"
+  },
+  {
+   "i": 27,
+   "lat": 51.504248,
+   "lon": -0.098784,
+   "heading": 348.0,
+   "street": "Ewer Street"
+  },
+  {
+   "i": 28,
+   "lat": 51.504419,
+   "lon": -0.098842,
+   "heading": 349.7,
+   "street": "Ewer Street"
+  },
+  {
+   "i": 29,
+   "lat": 51.504581,
+   "lon": -0.098889,
+   "heading": 353.6,
+   "street": "Ewer Street"
+  },
+  {
+   "i": 30,
+   "lat": 51.5047,
+   "lon": -0.098911,
+   "heading": 320.8,
+   "street": "Ewer Street"
+  },
+  {
+   "i": 31,
+   "lat": 51.50512,
+   "lon": -0.099461,
+   "heading": 264.6,
+   "street": "Lavington Street"
+  },
+  {
+   "i": 32,
+   "lat": 51.505107,
+   "lon": -0.099686,
+   "heading": 265.9,
+   "street": "Lavington Street"
+  },
+  {
+   "i": 33,
+   "lat": 51.505099,
+   "lon": -0.099873,
+   "heading": 269.3,
+   "street": "Lavington Street"
+  },
+  {
+   "i": 34,
+   "lat": 51.505098,
+   "lon": -0.099974,
+   "heading": 269.3,
+   "street": "Lavington Street"
+  },
+  {
+   "i": 35,
+   "lat": 51.505098,
+   "lon": -0.100016,
+   "heading": 269.3,
+   "street": "Lavington Street"
+  },
+  {
+   "i": 36,
+   "lat": 51.505097,
+   "lon": -0.100085,
+   "heading": 278.4,
+   "street": "Lavington Street"
+  },
+  {
+   "i": 37,
+   "lat": 51.505112,
+   "lon": -0.100245,
+   "heading": 323.4,
+   "street": "Lavington Street"
+  },
+  {
+   "i": 38,
+   "lat": 51.505467,
+   "lon": -0.100669,
+   "heading": 349.7,
+   "street": "Farnham Place"
+  },
+  {
+   "i": 39,
+   "lat": 51.505905,
+   "lon": -0.100797,
+   "heading": 200.2,
+   "street": "Great Suffolk Street"
+  },
+  {
+   "i": 40,
+   "lat": 51.505869,
+   "lon": -0.100819,
+   "heading": 200.8,
+   "street": "Great Suffolk Street"
+  },
+  {
+   "i": 41,
+   "lat": 51.505768,
+   "lon": -0.10088,
+   "heading": 201.2,
+   "street": "Great Suffolk Street"
+  },
+  {
+   "i": 42,
+   "lat": 51.505635,
+   "lon": -0.100963,
+   "heading": 292.8,
+   "street": "Great Suffolk Street"
+  },
+  {
+   "i": 43,
+   "lat": 51.505895,
+   "lon": -0.101954,
+   "heading": 0.0,
+   "street": "Price's Street"
+  },
+  {
+   "i": 44,
+   "lat": 51.505895,
+   "lon": -0.101954,
+   "heading": 214.0,
+   "street": "Price's Street"
+  },
+  {
+   "i": 45,
+   "lat": 51.505652,
+   "lon": -0.102217,
+   "heading": 222.0,
+   "street": "Bear Lane"
+  },
+  {
+   "i": 46,
+   "lat": 51.505581,
+   "lon": -0.10232,
+   "heading": 262.1,
+   "street": "Treveris Street"
+  },
+  {
+   "i": 47,
+   "lat": 51.505561,
+   "lon": -0.102557,
+   "heading": 259.3,
+   "street": "Treveris Street"
+  },
+  {
+   "i": 48,
+   "lat": 51.505533,
+   "lon": -0.102786,
+   "heading": 230.2,
+   "street": "Treveris Street"
+  },
+  {
+   "i": 49,
+   "lat": 51.505363,
+   "lon": -0.103115,
+   "heading": 180.1,
+   "street": "Chancel Street"
+  },
+  {
+   "i": 50,
+   "lat": 51.505267,
+   "lon": -0.103116,
+   "heading": 180.1,
+   "street": "Chancel Street"
+  },
+  {
+   "i": 51,
+   "lat": 51.505151,
+   "lon": -0.103116,
+   "heading": 177.6,
+   "street": "Chancel Street"
+  },
+  {
+   "i": 52,
+   "lat": 51.505028,
+   "lon": -0.103108,
+   "heading": 178.7,
+   "street": "Chancel Street"
+  },
+  {
+   "i": 53,
+   "lat": 51.504906,
+   "lon": -0.103103,
+   "heading": 177.2,
+   "street": "Chancel Street"
+  },
+  {
+   "i": 54,
+   "lat": 51.504839,
+   "lon": -0.103098,
+   "heading": 0.0,
+   "street": "Chancel Street"
+  },
+  {
+   "i": 55,
+   "lat": 51.504839,
+   "lon": -0.103098,
+   "heading": 0.0,
+   "street": "Chancel Street"
+  },
+  {
+   "i": 56,
+   "lat": 51.504839,
+   "lon": -0.103098,
+   "heading": 197.4,
+   "street": "Chancel Street"
+  },
+  {
+   "i": 57,
+   "lat": 51.503225,
+   "lon": -0.10391,
+   "heading": 0.0,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 58,
+   "lat": 51.503225,
+   "lon": -0.10391,
+   "heading": 238.6,
+   "street": "Nelson Square"
+  },
+  {
+   "i": 59,
+   "lat": 51.503209,
+   "lon": -0.103954,
+   "heading": 0.0,
+   "street": "Nelson Square"
+  }
+ ]
+}

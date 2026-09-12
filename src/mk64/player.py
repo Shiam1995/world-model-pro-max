@@ -54,14 +54,32 @@ def speed_per_frame(state):
 
 
 def read(env, base=PLAYER_BASE):
-    """Snapshot the kart. One RDRAM read, no allocation of 8 MiB."""
+    """Snapshot the kart. One RDRAM read, no allocation of 8 MiB.
+
+    Note the `^ 2` on 16-bit fields. mupen64plus stores RDRAM byte-swapped
+    *within each 32-bit word*, so a 32-bit read works little-endian (which is
+    why pos/speed were right all along) but a 16-bit field at N64 offset X
+    actually lives at host offset X^2. Reading it straight gives the neighbouring
+    halfword: rotation[1] and rotation[2] came back as a constant 0, and
+    `nearestPathPointId` looked permanently unused when it was simply never
+    being read. 8-bit fields would need X^3 by the same rule.
+    """
     raw = env.ram_bytes(base, 0x230)
     out = {}
     for name, (off, dt, cnt) in FIELDS.items():
-        v = np.frombuffer(raw[off:off + np.dtype(dt).itemsize * cnt], dtype=dt)
+        w = np.dtype(dt).itemsize
+        if w == 2:
+            vals = []
+            for k in range(cnt):
+                o = (off + 2 * k) ^ 2
+                vals.append(np.frombuffer(raw[o:o + 2], dtype=dt)[0].item())
+            out[name] = vals if cnt > 1 else vals[0]
+            continue
+        v = np.frombuffer(raw[off:off + w * cnt], dtype=dt)
         out[name] = v.tolist() if cnt > 1 else v[0].item()
     # Heading in radians, from the yaw word. Rotation is stored as s16 turns.
-    out["yaw"] = out["rotation"][0] * ANGLE_SCALE
+    # rotation is (pitch, yaw, roll); index 1 after the 16-bit ^2 fix.
+    out["yaw"] = out["rotation"][1] * ANGLE_SCALE
     return out
 
 

@@ -1,0 +1,451 @@
+{
+ "area": "westminster",
+ "centre": {
+  "lat": 51.501,
+  "lon": -0.127
+ },
+ "streets": [
+  "Storey's Gate",
+  "Broad Sanctuary",
+  "Parliament Square",
+  "St. Margaret Street",
+  "Bridge Street",
+  "Derby Gate",
+  "Parliament Street",
+  "King Charles Street",
+  "Great George Street"
+ ],
+ "box_side_m": 400.0,
+ "closed": true,
+ "lap_length_m": 1238.4,
+ "snapped": true,
+ "snap_mode": "edge",
+ "bbox": {
+  "north": 51.50279662234998,
+  "south": 51.49920337765001,
+  "west": -0.12988613578942632,
+  "east": -0.12411386421057369
+ },
+ "waypoints": [
+  {
+   "i": 0,
+   "lat": 51.500305,
+   "lon": -0.129608,
+   "heading": 165.9,
+   "street": "Storey's Gate"
+  },
+  {
+   "i": 1,
+   "lat": 51.500235,
+   "lon": -0.12958,
+   "heading": 172.9,
+   "street": "Storey's Gate"
+  },
+  {
+   "i": 2,
+   "lat": 51.499949,
+   "lon": -0.129522,
+   "heading": 183.4,
+   "street": "Storey's Gate"
+  },
+  {
+   "i": 3,
+   "lat": 51.499854,
+   "lon": -0.129531,
+   "heading": 140.6,
+   "street": "Storey's Gate"
+  },
+  {
+   "i": 4,
+   "lat": 51.49964,
+   "lon": -0.129248,
+   "heading": 55.2,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 5,
+   "lat": 51.499729,
+   "lon": -0.129043,
+   "heading": 79.2,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 6,
+   "lat": 51.49976,
+   "lon": -0.128782,
+   "heading": 56.6,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 7,
+   "lat": 51.499863,
+   "lon": -0.128531,
+   "heading": 62.0,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 8,
+   "lat": 51.499946,
+   "lon": -0.12828,
+   "heading": 62.4,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 9,
+   "lat": 51.500028,
+   "lon": -0.128028,
+   "heading": 66.7,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 10,
+   "lat": 51.500108,
+   "lon": -0.127731,
+   "heading": 76.4,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 11,
+   "lat": 51.50015,
+   "lon": -0.12745,
+   "heading": 75.1,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 12,
+   "lat": 51.500178,
+   "lon": -0.127281,
+   "heading": 78.8,
+   "street": "Broad Sanctuary"
+  },
+  {
+   "i": 13,
+   "lat": 51.500227,
+   "lon": -0.126887,
+   "heading": 142.6,
+   "street": "Parliament Square"
+  },
+  {
+   "i": 14,
+   "lat": 51.499689,
+   "lon": -0.126226,
+   "heading": 176.9,
+   "street": "St. Margaret Street"
+  },
+  {
+   "i": 15,
+   "lat": 51.499661,
+   "lon": -0.126223,
+   "heading": 123.9,
+   "street": "St. Margaret Street"
+  },
+  {
+   "i": 16,
+   "lat": 51.499631,
+   "lon": -0.126152,
+   "heading": 17.7,
+   "street": "St. Margaret Street"
+  },
+  {
+   "i": 17,
+   "lat": 51.499659,
+   "lon": -0.126137,
+   "heading": 1.7,
+   "street": "St. Margaret Street"
+  },
+  {
+   "i": 18,
+   "lat": 51.499713,
+   "lon": -0.126135,
+   "heading": 1.7,
+   "street": "St. Margaret Street"
+  },
+  {
+   "i": 19,
+   "lat": 51.4998,
+   "lon": -0.126131,
+   "heading": 1.7,
+   "street": "St. Margaret Street"
+  },
+  {
+   "i": 20,
+   "lat": 51.499904,
+   "lon": -0.126126,
+   "heading": 35.4,
+   "street": "St. Margaret Street"
+  },
+  {
+   "i": 21,
+   "lat": 51.500974,
+   "lon": -0.124905,
+   "heading": 91.0,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 22,
+   "lat": 51.500972,
+   "lon": -0.124693,
+   "heading": 94.0,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 23,
+   "lat": 51.500961,
+   "lon": -0.124458,
+   "heading": 94.7,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 24,
+   "lat": 51.500951,
+   "lon": -0.124266,
+   "heading": 96.3,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 25,
+   "lat": 51.500949,
+   "lon": -0.124224,
+   "heading": 0.0,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 26,
+   "lat": 51.500949,
+   "lon": -0.124224,
+   "heading": 0.0,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 27,
+   "lat": 51.500949,
+   "lon": -0.124224,
+   "heading": 276.3,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 28,
+   "lat": 51.500953,
+   "lon": -0.124286,
+   "heading": 274.6,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 29,
+   "lat": 51.500963,
+   "lon": -0.124485,
+   "heading": 273.8,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 30,
+   "lat": 51.500972,
+   "lon": -0.124705,
+   "heading": 271.0,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 31,
+   "lat": 51.500974,
+   "lon": -0.124941,
+   "heading": 271.2,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 32,
+   "lat": 51.500977,
+   "lon": -0.125176,
+   "heading": 272.0,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 33,
+   "lat": 51.500982,
+   "lon": -0.125381,
+   "heading": 357.3,
+   "street": "Bridge Street"
+  },
+  {
+   "i": 34,
+   "lat": 51.50199,
+   "lon": -0.125456,
+   "heading": 273.9,
+   "street": "Derby Gate"
+  },
+  {
+   "i": 35,
+   "lat": 51.501992,
+   "lon": -0.125507,
+   "heading": 273.9,
+   "street": "Derby Gate"
+  },
+  {
+   "i": 36,
+   "lat": 51.501995,
+   "lon": -0.125584,
+   "heading": 273.9,
+   "street": "Derby Gate"
+  },
+  {
+   "i": 37,
+   "lat": 51.502,
+   "lon": -0.125695,
+   "heading": 298.9,
+   "street": "Derby Gate"
+  },
+  {
+   "i": 38,
+   "lat": 51.502105,
+   "lon": -0.126001,
+   "heading": 271.4,
+   "street": "Parliament Street"
+  },
+  {
+   "i": 39,
+   "lat": 51.502106,
+   "lon": -0.126067,
+   "heading": 274.3,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 40,
+   "lat": 51.502118,
+   "lon": -0.126328,
+   "heading": 280.5,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 41,
+   "lat": 51.502148,
+   "lon": -0.12659,
+   "heading": 275.2,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 42,
+   "lat": 51.502164,
+   "lon": -0.126867,
+   "heading": 275.2,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 43,
+   "lat": 51.502178,
+   "lon": -0.127125,
+   "heading": 275.2,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 44,
+   "lat": 51.502192,
+   "lon": -0.127366,
+   "heading": 275.2,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 45,
+   "lat": 51.502205,
+   "lon": -0.127594,
+   "heading": 275.3,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 46,
+   "lat": 51.502218,
+   "lon": -0.127816,
+   "heading": 275.5,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 47,
+   "lat": 51.502231,
+   "lon": -0.128041,
+   "heading": 275.5,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 48,
+   "lat": 51.502245,
+   "lon": -0.128262,
+   "heading": 275.5,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 49,
+   "lat": 51.502258,
+   "lon": -0.12849,
+   "heading": 275.5,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 50,
+   "lat": 51.502271,
+   "lon": -0.128707,
+   "heading": 188.9,
+   "street": "King Charles Street"
+  },
+  {
+   "i": 51,
+   "lat": 51.501214,
+   "lon": -0.128973,
+   "heading": 276.9,
+   "street": "Great George Street"
+  },
+  {
+   "i": 52,
+   "lat": 51.501225,
+   "lon": -0.129118,
+   "heading": 276.9,
+   "street": "Great George Street"
+  },
+  {
+   "i": 53,
+   "lat": 51.501231,
+   "lon": -0.1292,
+   "heading": 276.9,
+   "street": "Great George Street"
+  },
+  {
+   "i": 54,
+   "lat": 51.501234,
+   "lon": -0.129243,
+   "heading": 276.9,
+   "street": "Great George Street"
+  },
+  {
+   "i": 55,
+   "lat": 51.501237,
+   "lon": -0.129287,
+   "heading": 207.0,
+   "street": "Great George Street"
+  },
+  {
+   "i": 56,
+   "lat": 51.500902,
+   "lon": -0.129562,
+   "heading": 186.3,
+   "street": "Storey's Gate"
+  },
+  {
+   "i": 57,
+   "lat": 51.500747,
+   "lon": -0.129589,
+   "heading": 183.1,
+   "street": "Storey's Gate"
+  },
+  {
+   "i": 58,
+   "lat": 51.5006,
+   "lon": -0.129602,
+   "heading": 180.6,
+   "street": "Storey's Gate"
+  },
+  {
+   "i": 59,
+   "lat": 51.500448,
+   "lon": -0.129605,
+   "heading": 180.8,
+   "street": "Storey's Gate"
+  }
+ ]
+}

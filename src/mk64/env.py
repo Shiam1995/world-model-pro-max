@@ -116,6 +116,12 @@ class MK64Env:
 
         self.core.set_frame_callback(self._on_frame)
         self._start()
+        # Warm up before handing the env to anyone. Straight out of the
+        # constructor the ROM has not executed a single frame (polls=0), and a
+        # savestate load issued in that window never completes. Every script
+        # that worked happened to step first; making it implicit removes a
+        # footgun rather than documenting one.
+        self.step(frames=10)
 
     # --- lifecycle -------------------------------------------------------
     def _on_frame(self, idx):

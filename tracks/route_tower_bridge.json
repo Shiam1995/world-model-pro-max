@@ -1,0 +1,452 @@
+{
+ "area": "tower_bridge",
+ "centre": {
+  "lat": 51.503,
+  "lon": -0.0785
+ },
+ "streets": [
+  "Barnham Street",
+  "Druid Street",
+  "Tower Bridge Road",
+  "Fair Street",
+  "Tooley Street",
+  "Boss Street",
+  "Lafone Street",
+  "Queen Elizabeth Street",
+  "Horselydown Lane",
+  "Potters Fields"
+ ],
+ "box_side_m": 400.0,
+ "closed": true,
+ "lap_length_m": 1154.2,
+ "snapped": true,
+ "snap_mode": "edge",
+ "bbox": {
+  "north": 51.504796622349986,
+  "south": 51.501203377650015,
+  "west": -0.08138626245528566,
+  "east": -0.07561373754471434
+ },
+ "waypoints": [
+  {
+   "i": 0,
+   "lat": 51.502075,
+   "lon": -0.080811,
+   "heading": 193.3,
+   "street": "Barnham Street"
+  },
+  {
+   "i": 1,
+   "lat": 51.502074,
+   "lon": -0.080812,
+   "heading": 0.0,
+   "street": "Druid Street"
+  },
+  {
+   "i": 2,
+   "lat": 51.502074,
+   "lon": -0.080812,
+   "heading": 0.0,
+   "street": "Druid Street"
+  },
+  {
+   "i": 3,
+   "lat": 51.502074,
+   "lon": -0.080812,
+   "heading": 99.9,
+   "street": "Druid Street"
+  },
+  {
+   "i": 4,
+   "lat": 51.502071,
+   "lon": -0.08078,
+   "heading": 97.9,
+   "street": "Druid Street"
+  },
+  {
+   "i": 5,
+   "lat": 51.502053,
+   "lon": -0.080575,
+   "heading": 75.2,
+   "street": "Druid Street"
+  },
+  {
+   "i": 6,
+   "lat": 51.502087,
+   "lon": -0.080368,
+   "heading": 66.3,
+   "street": "Druid Street"
+  },
+  {
+   "i": 7,
+   "lat": 51.502159,
+   "lon": -0.080106,
+   "heading": 111.4,
+   "street": "Druid Street"
+  },
+  {
+   "i": 8,
+   "lat": 51.502033,
+   "lon": -0.079588,
+   "heading": 129.1,
+   "street": "Druid Street"
+  },
+  {
+   "i": 9,
+   "lat": 51.50193,
+   "lon": -0.079386,
+   "heading": 128.8,
+   "street": "Druid Street"
+  },
+  {
+   "i": 10,
+   "lat": 51.501826,
+   "lon": -0.079178,
+   "heading": 128.8,
+   "street": "Druid Street"
+  },
+  {
+   "i": 11,
+   "lat": 51.501712,
+   "lon": -0.078951,
+   "heading": 128.8,
+   "street": "Druid Street"
+  },
+  {
+   "i": 12,
+   "lat": 51.501601,
+   "lon": -0.078728,
+   "heading": 130.6,
+   "street": "Druid Street"
+  },
+  {
+   "i": 13,
+   "lat": 51.501488,
+   "lon": -0.078517,
+   "heading": 79.7,
+   "street": "Druid Street"
+  },
+  {
+   "i": 14,
+   "lat": 51.501551,
+   "lon": -0.077958,
+   "heading": 17.6,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 15,
+   "lat": 51.501632,
+   "lon": -0.077917,
+   "heading": 17.9,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 16,
+   "lat": 51.501741,
+   "lon": -0.07786,
+   "heading": 75.3,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 17,
+   "lat": 51.501849,
+   "lon": -0.077196,
+   "heading": 136.7,
+   "street": "Fair Street"
+  },
+  {
+   "i": 18,
+   "lat": 51.501751,
+   "lon": -0.077047,
+   "heading": 136.7,
+   "street": "Fair Street"
+  },
+  {
+   "i": 19,
+   "lat": 51.501666,
+   "lon": -0.076919,
+   "heading": 49.0,
+   "street": "Fair Street"
+  },
+  {
+   "i": 20,
+   "lat": 51.501803,
+   "lon": -0.076665,
+   "heading": 21.8,
+   "street": "Tooley Street"
+  },
+  {
+   "i": 21,
+   "lat": 51.502067,
+   "lon": -0.076496,
+   "heading": 35.6,
+   "street": "Boss Street"
+  },
+  {
+   "i": 22,
+   "lat": 51.502164,
+   "lon": -0.076384,
+   "heading": 109.2,
+   "street": "Boss Street"
+  },
+  {
+   "i": 23,
+   "lat": 51.50205,
+   "lon": -0.075858,
+   "heading": 7.1,
+   "street": "Lafone Street"
+  },
+  {
+   "i": 24,
+   "lat": 51.502339,
+   "lon": -0.075801,
+   "heading": 124.1,
+   "street": "Queen Elizabeth Street"
+  },
+  {
+   "i": 25,
+   "lat": 51.502313,
+   "lon": -0.075738,
+   "heading": 304.1,
+   "street": "Queen Elizabeth Street"
+  },
+  {
+   "i": 26,
+   "lat": 51.502315,
+   "lon": -0.075744,
+   "heading": 304.1,
+   "street": "Queen Elizabeth Street"
+  },
+  {
+   "i": 27,
+   "lat": 51.502355,
+   "lon": -0.075838,
+   "heading": 304.1,
+   "street": "Queen Elizabeth Street"
+  },
+  {
+   "i": 28,
+   "lat": 51.502424,
+   "lon": -0.076003,
+   "heading": 344.9,
+   "street": "Queen Elizabeth Street"
+  },
+  {
+   "i": 29,
+   "lat": 51.503295,
+   "lon": -0.07638,
+   "heading": 0.0,
+   "street": "Horselydown Lane"
+  },
+  {
+   "i": 30,
+   "lat": 51.503295,
+   "lon": -0.07638,
+   "heading": 213.0,
+   "street": "Horselydown Lane"
+  },
+  {
+   "i": 31,
+   "lat": 51.503236,
+   "lon": -0.076441,
+   "heading": 306.2,
+   "street": "Horselydown Lane"
+  },
+  {
+   "i": 32,
+   "lat": 51.503394,
+   "lon": -0.076788,
+   "heading": 202.2,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 33,
+   "lat": 51.503377,
+   "lon": -0.076798,
+   "heading": 22.2,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 34,
+   "lat": 51.503436,
+   "lon": -0.07676,
+   "heading": 22.2,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 35,
+   "lat": 51.503533,
+   "lon": -0.076696,
+   "heading": 14.9,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 36,
+   "lat": 51.503748,
+   "lon": -0.076604,
+   "heading": 0.0,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 37,
+   "lat": 51.503748,
+   "lon": -0.076604,
+   "heading": 0.0,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 38,
+   "lat": 51.503748,
+   "lon": -0.076604,
+   "heading": 0.0,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 39,
+   "lat": 51.503748,
+   "lon": -0.076604,
+   "heading": 274.3,
+   "street": "Tower Bridge Road"
+  },
+  {
+   "i": 40,
+   "lat": 51.503843,
+   "lon": -0.078609,
+   "heading": 0.0,
+   "street": "Potters Fields"
+  },
+  {
+   "i": 41,
+   "lat": 51.503843,
+   "lon": -0.078609,
+   "heading": 0.0,
+   "street": "Potters Fields"
+  },
+  {
+   "i": 42,
+   "lat": 51.503843,
+   "lon": -0.078609,
+   "heading": 0.0,
+   "street": "Potters Fields"
+  },
+  {
+   "i": 43,
+   "lat": 51.503843,
+   "lon": -0.078609,
+   "heading": 0.0,
+   "street": "Potters Fields"
+  },
+  {
+   "i": 44,
+   "lat": 51.503843,
+   "lon": -0.078609,
+   "heading": 0.0,
+   "street": "Potters Fields"
+  },
+  {
+   "i": 45,
+   "lat": 51.503843,
+   "lon": -0.078609,
+   "heading": 201.0,
+   "street": "Potters Fields"
+  },
+  {
+   "i": 46,
+   "lat": 51.503719,
+   "lon": -0.078686,
+   "heading": 246.9,
+   "street": "Potters Fields"
+  },
+  {
+   "i": 47,
+   "lat": 51.503439,
+   "lon": -0.079739,
+   "heading": 293.8,
+   "street": "Tooley Street"
+  },
+  {
+   "i": 48,
+   "lat": 51.503481,
+   "lon": -0.079894,
+   "heading": 291.7,
+   "street": "Tooley Street"
+  },
+  {
+   "i": 49,
+   "lat": 51.503532,
+   "lon": -0.080097,
+   "heading": 292.1,
+   "street": "Tooley Street"
+  },
+  {
+   "i": 50,
+   "lat": 51.503579,
+   "lon": -0.080284,
+   "heading": 292.2,
+   "street": "Tooley Street"
+  },
+  {
+   "i": 51,
+   "lat": 51.503621,
+   "lon": -0.080448,
+   "heading": 292.0,
+   "street": "Tooley Street"
+  },
+  {
+   "i": 52,
+   "lat": 51.503649,
+   "lon": -0.080562,
+   "heading": 292.1,
+   "street": "Tooley Street"
+  },
+  {
+   "i": 53,
+   "lat": 51.503662,
+   "lon": -0.080613,
+   "heading": 167.8,
+   "street": "Tooley Street"
+  },
+  {
+   "i": 54,
+   "lat": 51.502947,
+   "lon": -0.080364,
+   "heading": 202.1,
+   "street": "Barnham Street"
+  },
+  {
+   "i": 55,
+   "lat": 51.502806,
+   "lon": -0.080456,
+   "heading": 202.1,
+   "street": "Barnham Street"
+  },
+  {
+   "i": 56,
+   "lat": 51.50265,
+   "lon": -0.080559,
+   "heading": 201.7,
+   "street": "Barnham Street"
+  },
+  {
+   "i": 57,
+   "lat": 51.502543,
+   "lon": -0.080627,
+   "heading": 195.3,
+   "street": "Barnham Street"
+  },
+  {
+   "i": 58,
+   "lat": 51.50238,
+   "lon": -0.080698,
+   "heading": 194.6,
+   "street": "Barnham Street"
+  },
+  {
+   "i": 59,
+   "lat": 51.502262,
+   "lon": -0.080747,
+   "heading": 192.0,
+   "street": "Barnham Street"
+  }
+ ]
+}
