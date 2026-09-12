@@ -1,0 +1,8 @@
+{
+ "longitudinal_rmse": 0.4039419183607815,
+ "rmse_pct_of_top": 7.2384196917406065,
+ "sim_top": 5.5390349729117565,
+ "real_top": 5.580526351928711,
+ "frames_to_90pct_sim": 133,
+ "frames_to_90pct_real": 137
+}

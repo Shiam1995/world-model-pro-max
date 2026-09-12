@@ -1,0 +1,10 @@
+{
+ "top_speed": 6.5,
+ "accel_scale": 0.016399999999999998,
+ "turn_rate": 0.11900000000000001,
+ "turn_speed_falloff": 0.35,
+ "speed_rmse": 0.6107713016385681,
+ "turn_rmse_rad": 0.015514059955862998,
+ "real_top_speed": 5.580526351928711,
+ "sim_top_speed": 5.2026750218402364
+}

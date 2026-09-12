@@ -48,6 +48,9 @@ class MK64Env:
         # that dies because a neighbour got busy is not worth having. A frame
         # taking seconds is slow, not broken.
         self.timeout = timeout
+        #: How often a pause had to be re-asserted. Non-zero is fine; growing
+        #: fast means something else is resuming the core.
+        self.pause_nudges = 0
         self.frame = 0
         self._frame_evt = threading.Event()
         self._exec_thread = None
@@ -217,14 +220,38 @@ class MK64Env:
             raise m64.M64Error(f"{what} never completed within {max_frames} frames")
 
     def _await_paused(self, timeout=None):
+        """Make the core paused, rather than hoping it becomes paused.
+
+        Waiting passively is not enough. A PAUSE issued at the wrong moment can
+        be swallowed — the emulator then free-runs, and the next step() sits
+        there until it times out. It cost a whole search run: the core had run
+        12,178 frames on its own before anyone noticed. So re-assert the pause
+        while waiting; M64CMD_PAUSE is idempotent and takes effect at the next
+        VI, which is microseconds away.
+        """
         deadline = time.time() + (timeout or self.timeout)
+        nudged = 0
+        next_nudge = time.time()
         while time.time() < deadline:
-            if self.core.emu_state() == m64.M64EMU_PAUSED:
+            st = self.core.emu_state()
+            if st == m64.M64EMU_PAUSED:
+                self.pause_nudges += nudged
                 return
-            time.sleep(0.0002)
+            if st == m64.M64EMU_STOPPED:
+                raise m64.M64Error(
+                    f"emulator stopped mid-run at frame {self.frame}; core log:\n"
+                    + "\n".join(self.core.log[-8:]))
+            if time.time() >= next_nudge:
+                try:
+                    self.core.pause()
+                except m64.M64Error:
+                    pass
+                nudged += 1
+                next_nudge = time.time() + 0.05
+            time.sleep(0.0005)
         raise m64.M64Error(
-            f"core never reported PAUSED (state={self.core.emu_state()}, "
-            f"frame={self.frame})")
+            f"core never reported PAUSED after {nudged} pause requests "
+            f"(state={self.core.emu_state()}, frame={self.frame})")
 
     def run(self, frames, **action):
         """Hold one action for N frames — the usual way to skip menus."""
