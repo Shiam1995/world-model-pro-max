@@ -1,0 +1,139 @@
+{
+ "track": "kingscross_figure8_mk64",
+ "track_file": "/home/shiamjuniorchuttoo/kx/unreal_track_kingscross_figure8_mk64.json",
+ "lap_m": 1003.6,
+ "units_per_metre": 12.600637704264647,
+ "half_width_units": 75.60382622558788,
+ "physics_file": "runs/unreal_kart_physics.json",
+ "physics_fit": {
+  "units_per_metre": 12.600637704264647,
+  "seconds_per_step": 0.1,
+  "top_speed": 1.8659800313715145,
+  "accel_table": [
+   [
+    0.093299,
+    0.00284
+   ],
+   [
+    0.279897,
+    0.004041
+   ],
+   [
+    0.466495,
+    0.003966
+   ],
+   [
+    0.653093,
+    0.005214
+   ],
+   [
+    0.839691,
+    0.005536
+   ],
+   [
+    1.026289,
+    0.005104
+   ],
+   [
+    1.212887,
+    0.00444
+   ],
+   [
+    1.399485,
+    0.003393
+   ],
+   [
+    1.586083,
+    0.002189
+   ],
+   [
+    1.772681,
+    0.000518
+   ]
+  ],
+  "turn_table": [
+   [
+    0.583119,
+    0.018648
+   ],
+   [
+    0.816366,
+    0.024671
+   ],
+   [
+    1.049614,
+    0.019589
+   ],
+   [
+    1.516109,
+    0.022783
+   ],
+   [
+    1.749356,
+    0.018838
+   ]
+  ],
+  "steer_response": [
+   [
+    0.0,
+    0.0
+   ],
+   [
+    0.15,
+    0.039332324956471654
+   ],
+   [
+    0.3,
+    0.16284388918393167
+   ],
+   [
+    0.5,
+    0.4452400817021651
+   ],
+   [
+    0.8,
+    0.9232765638284196
+   ],
+   [
+    1.0,
+    1.0
+   ]
+  ],
+  "handedness": 1,
+  "mean_yaw_at_positive_stick": 0.01485584293217819,
+  "full_lock_level": 1.0,
+  "turn_coverage": {
+   "lowest_measured_speed": 0.5008,
+   "fraction_of_top_speed": 0.2684,
+   "bins": 5
+  }
+ },
+ "n_params": 385,
+ "generations": 80,
+ "population": 384,
+ "frames": 1400,
+ "seeds": [
+  {
+   "seed": 2,
+   "laps": 0.3460105684138425,
+   "progress": 4370.26968556092,
+   "offroad": 0.0,
+   "train_seconds": 164.27251553535461
+  },
+  {
+   "seed": 1,
+   "laps": 0.3458798986433704,
+   "progress": 4368.619267368981,
+   "offroad": 0.0,
+   "train_seconds": 164.6724226474762
+  },
+  {
+   "seed": 0,
+   "laps": 0.3450790235319537,
+   "progress": 4358.503853156666,
+   "offroad": 0.0,
+   "train_seconds": 166.3901560306549
+  }
+ ],
+ "best_seed": 2
+}
