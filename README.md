@@ -1,3 +1,4 @@
+![Uploading World Model Pro Max Logo.png…]()
 #World Model Pro Max
 
 1. create policy - train on mario kart 
