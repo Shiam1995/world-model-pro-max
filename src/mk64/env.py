@@ -37,11 +37,17 @@ DEFAULT_ROM = os.environ.get(
 
 class MK64Env:
     def __init__(self, rom=DEFAULT_ROM, headless=True, verbose=False,
-                 state_dir=None):
+                 state_dir=None, timeout=60.0):
         self.rom = str(rom)
         if not Path(self.rom).is_file():
             raise FileNotFoundError(f"ROM not found: {self.rom}")
         self.headless = headless
+        # How long to wait for a single frame. Generous on purpose: this box
+        # shares a CPU with other work (an Unreal shader compile pushed the load
+        # average past 20 and starved the emulator thread), and a training run
+        # that dies because a neighbour got busy is not worth having. A frame
+        # taking seconds is slow, not broken.
+        self.timeout = timeout
         self.frame = 0
         self._frame_evt = threading.Event()
         self._exec_thread = None
@@ -49,12 +55,18 @@ class MK64Env:
         self._states = {}
         self._next_id = 0
 
-        self.state_dir = Path(state_dir or "/dev/shm/mk64_states")
+        # Per-process savestate directory for the same reason as the pad: two
+        # environments writing s000001.st into one directory will load each
+        # other's worlds.
+        self.state_dir = Path(state_dir or f"/dev/shm/mk64_states_{os.getpid()}")
         self.state_dir.mkdir(parents=True, exist_ok=True)
 
         # The pad must exist before the plugin starts, or the plugin will
-        # initialise the segment itself and clear `present`.
+        # initialise the segment itself and clear `present`. The plugin reads
+        # MK64_INPUT_SHM, so point it at this process's segment before the core
+        # loads it.
         self.pad = ShmPad()
+        os.environ["MK64_INPUT_SHM"] = self.pad.name
 
         self.core = m64.Core(verbose=verbose)
         # Turn off the 60 fps limiter: training wants frames as fast as the CPU
@@ -138,6 +150,9 @@ class MK64Env:
             self._running = False
         self.core.detach_all()
         self.pad.close()
+        self.pad.unlink()
+        for f in self.state_dir.glob("*.st"):
+            f.unlink(missing_ok=True)
 
     def __enter__(self):
         return self
@@ -162,7 +177,7 @@ class MK64Env:
             self._await_paused()
             self._frame_evt.clear()
             self.core.advance_frame()
-            if not self._frame_evt.wait(timeout=5.0):
+            if not self._frame_evt.wait(timeout=self.timeout):
                 raise m64.M64Error(
                     f"frame did not advance (frame={self.frame}, "
                     f"polls={self.pad.polls}, state={self.core.emu_state()}); "
@@ -201,8 +216,8 @@ class MK64Env:
         if not event.is_set():
             raise m64.M64Error(f"{what} never completed within {max_frames} frames")
 
-    def _await_paused(self, timeout=5.0):
-        deadline = time.time() + timeout
+    def _await_paused(self, timeout=None):
+        deadline = time.time() + (timeout or self.timeout)
         while time.time() < deadline:
             if self.core.emu_state() == m64.M64EMU_PAUSED:
                 return

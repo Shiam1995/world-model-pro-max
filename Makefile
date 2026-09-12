@@ -20,13 +20,13 @@ $(BUILD):
 	@mkdir -p $(BUILD)
 
 test: all
-	python3 -m src.mk64.selftest
+	python3 -u -m src.mk64.selftest
 
 test-player: all
-	python3 -m src.mk64.player_selftest
+	python3 -u -m src.mk64.player_selftest
 
 test-obs: all
-	python3 -m src.obs.selftest
+	python3 -u -m src.obs.selftest
 
 clean:
 	rm -rf $(BUILD)

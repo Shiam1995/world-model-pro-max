@@ -18,7 +18,11 @@ R_TRIG, L_TRIG = 12, 13
 X_AXIS_SHIFT, Y_AXIS_SHIFT = 16, 24
 
 SHM_MAGIC = 0x4D363453  # 'M64S', must match input_shm.c
-SHM_NAME = os.environ.get("MK64_INPUT_SHM", "/mk64_input")
+# Per-process by default. A fixed name means two environments silently share
+# one controller and one savestate directory, which is the sort of thing that
+# looks like a flaky policy rather than a collision. Parallel rollouts need
+# this; MK64_INPUT_SHM still overrides it for the C plugin to match.
+SHM_NAME = os.environ.get("MK64_INPUT_SHM") or f"/mk64_input_{os.getpid()}"
 # struct shm_pad: magic, version, present, polls, pad[4]
 SHM_FMT = "<4I4I"
 SHM_SIZE = struct.calcsize(SHM_FMT)
