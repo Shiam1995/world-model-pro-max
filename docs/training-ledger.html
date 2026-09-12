@@ -1,0 +1,337 @@
+<title>Kart Policy Training Ledger</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root{
+    --bg:#EAEEF1; --panel:#F7F9FA; --ink:#12171C; --ink-2:#3D4851; --muted:#68757F;
+    --rule:#CBD5DC; --rule-soft:#DCE3E8;
+    --accent:#0E6F66; --accent-soft:#D7E8E5;
+    --ochre:#9A6414; --ochre-soft:#EFE3CD;
+    --bad:#9E3323; --bad-soft:#F0DAD5;
+    --good:#2C6A45;
+    --shadow:0 1px 0 rgba(18,23,28,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0E1318; --panel:#151C23; --ink:#E6EBEF; --ink-2:#BDC8D0; --muted:#8C9AA5;
+      --rule:#27323B; --rule-soft:#1E262E;
+      --accent:#54BFB0; --accent-soft:#12302E;
+      --ochre:#D69B4E; --ochre-soft:#2E2415;
+      --bad:#E37866; --bad-soft:#331B17;
+      --good:#6BC291;
+      --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0E1318; --panel:#151C23; --ink:#E6EBEF; --ink-2:#BDC8D0; --muted:#8C9AA5;
+    --rule:#27323B; --rule-soft:#1E262E;
+    --accent:#54BFB0; --accent-soft:#12302E;
+    --ochre:#D69B4E; --ochre-soft:#2E2415;
+    --bad:#E37866; --bad-soft:#331B17;
+    --good:#6BC291;
+    --shadow:none;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size:17px; line-height:1.62;
+    padding-block:40px 72px; padding-left:20px; padding-right:20px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:44px}
+
+  h1,h2,h3,.eyebrow,.tile-n,table,.mono{font-family:"Archivo", "Helvetica Neue", Arial, sans-serif}
+  h1{font-size:clamp(30px,5.2vw,44px); line-height:1.08; font-weight:700; letter-spacing:-.022em; margin:0; text-wrap:balance}
+  h2{font-size:22px; font-weight:700; letter-spacing:-.012em; margin:0; text-wrap:balance}
+  h3{font-size:15px; font-weight:600; letter-spacing:.01em; margin:0; color:var(--ink-2)}
+  p{margin:0}
+  a{color:var(--accent)}
+
+  .eyebrow{
+    font-size:11.5px; font-weight:600; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--muted); font-feature-settings:"tnum";
+  }
+  .mono,code{font-family:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace}
+  code{font-size:.86em; background:var(--rule-soft); padding:1px 5px; border-radius:3px; color:var(--ink-2)}
+
+  header .lede{color:var(--ink-2); font-size:19px; max-width:62ch; margin-top:14px}
+  .stamp{display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:18px}
+  .stamp span{font-size:12px}
+
+  /* summary tiles */
+  .tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:2px; overflow:hidden}
+  .tile{background:var(--panel); padding:16px 16px 14px; display:flex; flex-direction:column; gap:4px}
+  .tile-n{font-size:27px; font-weight:700; letter-spacing:-.02em; font-variant-numeric:tabular-nums; line-height:1.1}
+  .tile-l{font-size:12px; color:var(--muted); line-height:1.35; font-family:"Archivo",sans-serif}
+  @media (max-width:620px){ .tiles{grid-template-columns:repeat(2,1fr)} }
+
+  section{display:flex; flex-direction:column; gap:16px}
+  .sec-head{display:flex; flex-direction:column; gap:6px; border-top:2px solid var(--ink); padding-top:12px}
+  .run .sec-head{border-top-color:var(--accent)}
+  .notrun .sec-head{border-top-color:var(--ochre)}
+  .body-copy{max-width:66ch; color:var(--ink-2)}
+  .body-copy + .body-copy{margin-top:-4px}
+
+  .tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:2px; background:var(--panel)}
+  table{border-collapse:collapse; width:100%; font-size:13.5px; min-width:520px}
+  th,td{text-align:right; padding:9px 12px; border-bottom:1px solid var(--rule-soft); font-variant-numeric:tabular-nums; white-space:nowrap}
+  th:first-child,td:first-child{text-align:left; white-space:normal}
+  thead th{font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:600; border-bottom:1px solid var(--rule)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody td{font-family:"IBM Plex Mono",monospace; font-size:13px}
+  tbody td:first-child{font-family:"Archivo",sans-serif; font-weight:500; font-size:13.5px}
+  tr.hero td{background:var(--accent-soft)}
+  .pill{display:inline-block; font-family:"Archivo",sans-serif; font-size:11px; font-weight:600; letter-spacing:.04em; padding:2px 7px; border-radius:2px}
+  .pill.ok{background:var(--accent-soft); color:var(--accent)}
+  .pill.no{background:var(--bad-soft); color:var(--bad)}
+  .pill.part{background:var(--ochre-soft); color:var(--ochre)}
+
+  figure{margin:0; display:flex; flex-direction:column; gap:10px}
+  figcaption{font-size:12.5px; color:var(--muted); font-family:"Archivo",sans-serif; max-width:64ch}
+  svg{display:block; width:100%; height:auto; max-width:100%}
+
+  .kv{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:1px; background:var(--rule); border:1px solid var(--rule); border-radius:2px; overflow:hidden}
+  .kv > div{background:var(--panel); padding:12px 14px; display:flex; flex-direction:column; gap:2px}
+  .kv dt{font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-family:"Archivo",sans-serif; font-weight:600}
+  .kv dd{margin:0; font-family:"IBM Plex Mono",monospace; font-size:14px; font-variant-numeric:tabular-nums}
+  .kv dd small{color:var(--muted); font-size:11.5px}
+
+  .note{border-left:3px solid var(--accent); padding:2px 0 2px 16px; color:var(--ink-2); max-width:64ch}
+  .note.warn{border-left-color:var(--ochre)}
+  .note strong{color:var(--ink); font-weight:600}
+
+  ul.gaps{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px}
+  ul.gaps li{display:grid; grid-template-columns:max-content 1fr; gap:4px 14px; align-items:baseline}
+  ul.gaps .what{font-family:"Archivo",sans-serif; font-weight:600; font-size:14px}
+  ul.gaps .why{grid-column:2; color:var(--ink-2); font-size:15.5px}
+  @media (max-width:520px){ ul.gaps li{grid-template-columns:1fr} ul.gaps .why{grid-column:1} }
+
+  footer{border-top:1px solid var(--rule); padding-top:14px; color:var(--muted); font-size:13px; font-family:"Archivo",sans-serif}
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Mario to Sonic · training record · 12 Sep 2026</p>
+    <h1>Kart Policy Training Ledger</h1>
+    <p class="lede">Every policy in this project was trained by evolution strategies inside a fitted
+      simulator. None of them was ever trained against an emulator, and none against Unreal — the real
+      worlds are only ever used to <em>measure</em>.</p>
+    <div class="stamp mono">
+      <span>9 networks</span><span>385 parameters each</span><span>17 min 23 s total training</span><span>0 gradients</span>
+    </div>
+  </header>
+
+  <div class="tiles">
+    <div class="tile"><span class="tile-n">26.70<small class="tile-l" style="display:inline"> s</small></span><span class="tile-l">Best real Mario Kart 64 lap, from a policy that never saw the game</span></div>
+    <div class="tile"><span class="tile-n">112 s</span><span class="tile-l">Training time that produced it</span></div>
+    <div class="tile"><span class="tile-n">4 / 5</span><span class="tile-l">Seeds that complete a lap on the real console</span></div>
+    <div class="tile"><span class="tile-n">0.8 %</span><span class="tile-l">Top-speed error between the sim it learned in and the console</span></div>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">Method</p>
+      <h2>One algorithm, used twice</h2>
+    </div>
+    <p class="body-copy">Training is evolution strategies, not reinforcement learning and not gradient descent.
+      The simulator already steps hundreds of karts at once, so <strong>the population is the batch</strong>: give every
+      kart its own weights and a single vectorised rollout scores an entire generation. The top 12.5 % by
+      fitness are averaged into the next generation's mean, and the search radius shrinks 3 % per generation.</p>
+    <p class="body-copy">Fitness is ground covered, charged for leaving the road —
+      <code>progress − 0.35 × offroad_frames × top_speed</code> — so a policy cannot win by cutting a corner
+      across the grass. The network is an MLP of 10 → 32 → 1 with tanh, 385 numbers, steering only; the
+      throttle is held open.</p>
+
+    <dl class="kv">
+      <div><dt>Generations</dt><dd>80</dd></div>
+      <div><dt>Population</dt><dd>384 <small>= karts in sim</small></dd></div>
+      <div><dt>Elite fraction</dt><dd>0.125 <small>→ 48 kept</small></dd></div>
+      <div><dt>Sigma</dt><dd>0.35 <small>× 0.97 / gen</small></dd></div>
+      <div><dt>Rollout</dt><dd>900 frames <small>· 1400 in Unreal</small></dd></div>
+      <div><dt>Start jitter</dt><dd>±55 lat · 0.30 yaw</dd></div>
+    </dl>
+
+    <p class="body-copy">Two deliberate anti-overfitting measures. The start point is <strong>randomised to any
+      checkpoint on the lap</strong> each generation, so nothing wins by memorising one launch. And the physics
+      itself is jittered every generation — turn rate ×0.70–1.45, acceleration ×0.80–1.25, top speed ×0.9–1.1,
+      road width ×0.75–1.15 — because the sim is a fit, not a port, and its residual error is exactly what
+      broke the first transfer attempt.</p>
+  </section>
+
+  <section class="run">
+    <div class="sec-head">
+      <p class="eyebrow">Campaign 01 · Luigi Raceway · Mario Kart 64</p>
+      <h2>Five seeds, five drivers</h2>
+    </div>
+    <p class="body-copy">Five independent evolution runs from different seeds, each about two minutes of CPU.
+      They are separately evolved rather than copies, so their disagreement is real — that is the ensemble
+      stage 2's confidence signal was meant to be calibrated against. Every one was then validated on the real
+      ROM through the emulator, from the committed start-line savestate.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Policy</th><th>Train</th><th>Sim laps</th><th>Console</th><th>Lap time</th><th>Mean speed</th><th>Off-road</th><th>Mean |lateral|</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hero"><td>es_v2 <span class="mono" style="color:var(--muted)">→ luigi_raceway_v2</span></td><td>112 s</td><td>—</td><td><span class="pill ok">LAP</span></td><td>26.72 s</td><td>3.78</td><td>118 f</td><td>36.7</td></tr>
+          <tr><td>es_seed1</td><td>109 s</td><td>0.757</td><td><span class="pill ok">LAP</span></td><td>39.92 s</td><td>2.59</td><td>172 f</td><td>38.5</td></tr>
+          <tr><td>es_seed2</td><td>111 s</td><td>0.754</td><td><span class="pill no">DNF</span></td><td>66.67 s*</td><td>1.01</td><td>70 f</td><td>32.7</td></tr>
+          <tr><td>es_seed3</td><td>108 s</td><td>0.677</td><td><span class="pill ok">LAP</span></td><td>42.00 s</td><td>2.47</td><td>77 f</td><td>35.0</td></tr>
+          <tr><td>es_seed4</td><td>108 s</td><td>0.730</td><td><span class="pill ok">LAP</span></td><td>35.15 s</td><td>2.87</td><td>174 f</td><td>38.6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="eyebrow">* ran out the 4000-frame evaluation budget without crossing the line.</p>
+
+    <figure>
+      <svg viewBox="0 0 680 250" role="img" aria-label="Lap time on the real console for each seed: es_v2 26.72s, es_seed4 35.15s, es_seed1 39.92s, es_seed3 42.00s, es_seed2 did not finish within 66.67s.">
+        <g font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor">
+          <!-- axis ticks at 0,20,40,60 s mapped x = 150 + s*7.5 -->
+          <line x1="150" y1="24" x2="150" y2="196" stroke="var(--rule)" stroke-width="1"></line>
+          <line x1="300" y1="24" x2="300" y2="196" stroke="var(--rule-soft)" stroke-width="1"></line>
+          <line x1="450" y1="24" x2="450" y2="196" stroke="var(--rule-soft)" stroke-width="1"></line>
+          <line x1="600" y1="24" x2="600" y2="196" stroke="var(--rule-soft)" stroke-width="1"></line>
+          <text x="150" y="214" fill="var(--muted)" text-anchor="middle">0 s</text>
+          <text x="300" y="214" fill="var(--muted)" text-anchor="middle">20</text>
+          <text x="450" y="214" fill="var(--muted)" text-anchor="middle">40</text>
+          <text x="600" y="214" fill="var(--muted)" text-anchor="middle">60</text>
+
+          <!-- bars -->
+          <g font-family="Archivo, sans-serif" font-size="12" fill="var(--ink)">
+            <text x="0" y="42" dominant-baseline="middle">es_v2</text>
+            <rect x="150" y="31" width="200.3" height="22" fill="var(--accent)"></rect>
+            <text x="360" y="42" dominant-baseline="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="var(--accent)">26.72 s</text>
+
+            <text x="0" y="74" dominant-baseline="middle">es_seed4</text>
+            <rect x="150" y="63" width="263.6" height="22" fill="var(--ink-2)" opacity=".55"></rect>
+            <text x="423" y="74" dominant-baseline="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="var(--muted)">35.15 s</text>
+
+            <text x="0" y="106" dominant-baseline="middle">es_seed1</text>
+            <rect x="150" y="95" width="299.4" height="22" fill="var(--ink-2)" opacity=".55"></rect>
+            <text x="459" y="106" dominant-baseline="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="var(--muted)">39.92 s</text>
+
+            <text x="0" y="138" dominant-baseline="middle">es_seed3</text>
+            <rect x="150" y="127" width="315" height="22" fill="var(--ink-2)" opacity=".55"></rect>
+            <text x="475" y="138" dominant-baseline="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="var(--muted)">42.00 s</text>
+
+            <text x="0" y="170" dominant-baseline="middle">es_seed2</text>
+            <rect x="150" y="159" width="500" height="22" fill="var(--bad-soft)" stroke="var(--bad)" stroke-width="1" stroke-dasharray="3 3"></rect>
+            <text x="158" y="170" dominant-baseline="middle" font-family="IBM Plex Mono, monospace" font-size="11.5" fill="var(--bad)">no lap in 4000 frames</text>
+          </g>
+          <text x="0" y="238" fill="var(--muted)" font-size="10.5" letter-spacing=".08em">LAP TIME ON REAL HARDWARE · LOWER IS BETTER</text>
+        </g>
+      </svg>
+      <figcaption>Hardware result per seed. The fastest policy is 57 % quicker round the lap than the slowest
+        that finished, from identical hyperparameters and a different random seed.</figcaption>
+    </figure>
+
+    <div class="note warn">
+      <p><strong>Sim score did not predict the console.</strong> es_seed2 had the second-best simulator fitness
+        of the fleet (0.754 laps) and is the one policy that fails on real hardware; es_seed3 had the worst
+        (0.677) and finished. Ranking four seeds by sim fitness would have picked the wrong driver. The only
+        honest ranking came from running all five on the ROM.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">The world it trained in</p>
+      <h2>A simulator with a stated error bar</h2>
+    </div>
+    <p class="body-copy">Physics constants that exist in the decompilation — top speed per engine class, a
+      ten-point acceleration curve, friction, gravity — are lifted directly. Everything else is <em>fitted</em>
+      to scripted traces collected from the emulator itself: accelerate from rest, then hold each of three
+      steering angles for 360 frames. The residual is reported rather than assumed.</p>
+    <dl class="kv">
+      <div><dt>Longitudinal RMSE</dt><dd>0.404 <small>units/tick · 7.2 % of top</small></dd></div>
+      <div><dt>Top speed</dt><dd>5.539 <small>sim vs 5.581 real</small></dd></div>
+      <div><dt>Frames to 90 %</dt><dd>133 <small>sim vs 137 real</small></dd></div>
+      <div><dt>Throughput</dt><dd>≈250 k <small>kart-frames/s sustained</small></dd></div>
+    </dl>
+    <p class="body-copy">A Luigi Raceway run is 384 karts × 900 frames × 80 generations ≈ 27.6 million
+      kart-frames, delivered in under two minutes. The emulator manages roughly 100 frames a second. That ratio
+      is the entire reason a fitted sim is worth building.</p>
+  </section>
+
+  <section class="run">
+    <div class="sec-head">
+      <p class="eyebrow">Campaign 02 · King's Cross figure-8 · Unreal Engine</p>
+      <h2>The same loop, against a measured car</h2>
+    </div>
+    <p class="body-copy">The second campaign trained a policy native to an Unreal track. The recipe is the one
+      the handoff describes: record a single open-loop calibration run in Unreal (524 logged frames — a fixed
+      script of straights and held steering angles), fit the kart sim to that trace, train in the sim, and
+      drive the result back. Nothing about the vehicle is guessed; every number below is measured off the
+      trace.</p>
+    <dl class="kv">
+      <div><dt>Track</dt><dd>1003.6 m <small>closed figure-8</small></dd></div>
+      <div><dt>Scale</dt><dd>12.60 <small>units per metre</small></dd></div>
+      <div><dt>Road half-width</dt><dd>75.6 <small>units ≈ 6.0 m</small></dd></div>
+      <div><dt>Fitted top speed</dt><dd>1.866 <small>units/tick</small></dd></div>
+      <div><dt>Handedness</dt><dd>+1 <small>verified, not assumed</small></dd></div>
+      <div><dt>Steer response</dt><dd>0.15 → 3.9 % <small>· 0.8 → 92 %</small></dd></div>
+    </dl>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Seed</th><th>Train</th><th>Progress</th><th>Of lap</th><th>Off-road</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr class="hero"><td>seed 2 → kingscross_mk64_v1</td><td>164.3 s</td><td>346.8 m</td><td>0.346</td><td>0 f</td><td><span class="pill part">NOT YET DRIVEN</span></td></tr>
+          <tr><td>seed 1</td><td>164.7 s</td><td>346.7 m</td><td>0.346</td><td>0 f</td><td><span class="pill part">NOT YET DRIVEN</span></td></tr>
+          <tr><td>seed 0</td><td>166.4 s</td><td>345.9 m</td><td>0.345</td><td>0 f</td><td><span class="pill part">NOT YET DRIVEN</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <p><strong>0.346 laps is not a failure rate.</strong> At the fitted top speed a 1400-step rollout can cover
+        about 415 m, and the lap is 1003.6 m — so the training window ends before a lap can finish by
+        construction. The three seeds covered 84 % of the theoretical maximum distance with <em>zero</em>
+        off-road frames, and landed within 0.3 % of each other. What has not happened is the part that counts:
+        none of them has been driven back in Unreal, so this campaign has a sim result and no real result.</p>
+    </div>
+    <div class="note warn">
+      <p><strong>One measured risk.</strong> The turn table only covers speeds down to 26.8 % of top — below that
+        the sim extrapolates. An invented low-speed steering ramp is precisely the thing the README names as
+        "the single thing that broke sim-to-real", because it lets a policy carry a large constant steering
+        bias for free. The fix is more calibration coverage at low speed, not a tuned constant.</p>
+    </div>
+  </section>
+
+  <section class="notrun">
+    <div class="sec-head">
+      <p class="eyebrow">Negative results</p>
+      <h2>What was not trained</h2>
+    </div>
+    <ul class="gaps">
+      <li><span class="what">No emulator-in-the-loop training</span>
+        <span class="why">Deliberate. The console is the oracle, never the training signal — which is what makes
+          "trained for 112 s, then completed a real lap" a transfer claim rather than a fitting claim.</span></li>
+      <li><span class="what">No gradient method, no RL</span>
+        <span class="why">Also deliberate: long episodes, delayed reward, 385 parameters, and a vectorised sim
+          where the population is free. ES needs no credit assignment.</span></li>
+      <li><span class="what">Confidence calibration</span>
+        <span class="why">The ensemble exists and one of its members demonstrably fails on hardware — the
+          data to calibrate disagreement against outcomes is sitting in <code>runs/fleet_eval.json</code>. The
+          calibration itself was never run. Still the biggest missing headline feature.</span></li>
+      <li><span class="what">Generalisation across 21 courses</span>
+        <span class="why">The study crashed on launch and never produced a row: <code>scripts/generalise.py</code>
+          hands a 1-D <code>theta</code> to <code>act()</code>, which indexes it as 2-D —
+          <code>IndexError: too many indices</code>. A one-line reshape away from running. Until it does,
+          whether a policy drives an unseen track is unmeasured.</span></li>
+      <li><span class="what">Rollback search on hardware</span>
+        <span class="why">The model-free predecessor reached ~20 % of a lap, then the core stopped reporting
+          PAUSED at frame 12178 and the run died. Superseded by the trained policy, kept because it needs no
+          model at all.</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Source: <span class="mono">~/Projects/Mario to sonic</span> — <span class="mono">runs/fleet_train.json</span>,
+      <span class="mono">runs/fleet_eval.json</span>, <span class="mono">runs/demo_compact.json</span>,
+      <span class="mono">policies/*.json</span>. Nine trained networks, 1 043 s of total training,
+      all of it on CPU.</p>
+  </footer>
+
+</div>

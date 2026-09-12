@@ -11,6 +11,10 @@ policy driving a 26.70 s lap of Luigi Raceway on the real ROM, captured frame by
 frame through the emulator's own screenshot path so the recording is the drive.
 Re-record it with `python3 scripts/record_lap.py runs/lap_frames policies/luigi_raceway_v2.npy 2`.
 
+Every training run behind these policies — hyperparameters, per-seed hardware results, the
+simulator's error bars, and what was never trained — is in
+[docs/TRAINING.md](docs/TRAINING.md).
+
 ## Status
 
 **Stage 1, milestone 4 — the map and the observation vector — done.** The
