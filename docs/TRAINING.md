@@ -1,4 +1,4 @@
-# Training ledger
+# World Model Pro Max
 
 Every policy in this project was trained by **evolution strategies inside a fitted
 simulator**. None was ever trained against the emulator, and none against Unreal — the
