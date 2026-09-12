@@ -184,10 +184,15 @@ class KartSim:
                     eff = np.interp(np.abs(steer), sr[:, 0], sr[:, 1]) * np.sign(steer)
                 else:
                     eff = steer
-                self.yaw += eff * rate
+                # NEGATIVE on purpose. Replaying one fixed action script in
+                # both worlds showed +0.8 steer moving the real kart toward +x
+                # and the sim kart toward -x: the turn was mirrored. They agreed
+                # to 31 units while straight and were 678 apart after two turns.
+                # This is what actually broke sim-to-real.
+                self.yaw -= eff * rate
             else:
                 auth = 1.0 - p.turn_speed_falloff * (self.speed / max(p.top_speed, 1e-6))
-                self.yaw += steer * p.turn_rate * np.clip(auth, 0.05, 1.0) * \
+                self.yaw -= steer * p.turn_rate * np.clip(auth, 0.05, 1.0) * \
                     np.clip(self.speed / (0.25 * p.top_speed), 0, 1)
 
             self.xz += np.stack([np.sin(self.yaw), np.cos(self.yaw)], axis=1) \

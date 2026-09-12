@@ -1,0 +1,30 @@
+{
+ "name": "luigi_raceway_v2",
+ "obs_version": 1,
+ "obs_fields": [
+  "speed",
+  "lateral_offset",
+  "heading_sin",
+  "heading_cos",
+  "curv_300",
+  "curv_600",
+  "curv_1200",
+  "curv_2400",
+  "grade",
+  "progress_delta"
+ ],
+ "action": "steer in [-1,1]; throttle held open",
+ "architecture": "MLP 10-32-1, tanh, 385 parameters",
+ "trained": "evolution strategies in src/sim, 80 generations, 384 population, 112s",
+ "trained_on": "calibrated sim only - never trained against the emulator",
+ "validated_on": "Mario Kart 64 (USA), Luigi Raceway time trial, real mupen64plus",
+ "result": {
+  "completed_lap": true,
+  "seconds": 26.72,
+  "mean_speed": 3.78,
+  "frames_offroad": 118,
+  "frames": 1603,
+  "repeats": "3/3 identical"
+ },
+ "fleet": "4 of 5 seeds complete a real lap; this is the fastest"
+}

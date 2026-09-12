@@ -275,3 +275,56 @@ Milestone 5: behaviour-clone a lap so training never starts from random, then
 improve it by savestate segment search — now with a real progress signal
 (`track.project`) to search against, which is exactly what the greedy driver
 lacked.
+
+---
+
+## Slot-in policy
+
+A policy trained **entirely in simulation**, in 112 seconds, that completes a lap
+of Luigi Raceway on the real Nintendo 64. It never saw the emulator during
+training.
+
+```python
+from src.mk64.env import MK64Env
+from src.policy.drive import Driver
+
+with MK64Env() as env:
+    d = Driver.load("policies/luigi_raceway_v2.npy")
+    print(d.drive(env, "states/luigi_raceway_tt_start.st"))
+# {'completed_lap': True, 'seconds': 26.72, 'mean_speed': 3.78, ...}
+```
+
+| policy | real lap | time | mean speed | off-road |
+|---|---|---|---|---|
+| **luigi_raceway_v2** | yes | **26.72 s** | 3.78 | 118 / 1603 |
+| es_seed4 | yes | 35.15 s | 2.87 | 174 / 2109 |
+| es_seed1 | yes | 39.92 s | 2.59 | 172 / 2395 |
+| es_seed3 | yes | 42.00 s | 2.47 | 77 / 2520 |
+| es_seed2 | no | — | 1.01 | — |
+
+Four of five seeds transfer, so it is reproducible rather than a lucky run. The
+same lap repeats bit-identically three times out of three.
+
+It is 385 numbers and an MLP with ten inputs. Nothing in it knows what Mario
+Kart is — hand it another world that emits the same ten numbers and it drives
+that one instead. That is the whole point of the observation vector.
+
+### What finally made transfer work
+
+Three real differences between the sim and the console, each found by
+measurement rather than argument:
+
+1. **The turn was mirrored.** Replaying one fixed action script in both worlds
+   showed `+0.8` steer moving the real kart toward `+x` and the sim kart toward
+   `-x`. They agreed to 31 units while driving straight and were 678 apart after
+   two turns. *This was the one that mattered.*
+2. **Steering is non-linear with a deadzone.** Stick 0.15 gives exactly zero yaw
+   rate and 0.30 gives 5% of full lock. A policy trained on a linear model
+   steers with gentle corrections that do nothing on the real kart.
+3. **Heading now comes from the `velocity` vector**, not the yaw angle — a real
+   vector needs no sign or axis convention guessed about it.
+
+Ruled out along the way, each by measurement: steering sign at the policy output
+(A/B on the emulator), the yaw→heading trig convention, and parameter error in
+general (domain randomisation did not help, which is what said the gap was
+systematic).

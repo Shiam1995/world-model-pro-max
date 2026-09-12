@@ -51,6 +51,9 @@ class MK64Env:
         #: How often a pause had to be re-asserted. Non-zero is fine; growing
         #: fast means something else is resuming the core.
         self.pause_nudges = 0
+        #: Swallowed frame-advance requests that had to be re-issued. A few is
+        #: normal; a flood means something else is driving the core.
+        self.advance_retries = 0
         self.frame = 0
         self._frame_evt = threading.Event()
         self._exec_thread = None
@@ -184,11 +187,25 @@ class MK64Env:
             # hang that looks like a slow frame. So the callback is a hint, not
             # the completion signal; PAUSED is the completion signal.
             self._await_paused()
-            self._frame_evt.clear()
-            self.core.advance_frame()
-            if not self._frame_evt.wait(timeout=self.timeout):
+            got = False
+            for attempt in range(4):
+                self._frame_evt.clear()
+                self.core.advance_frame()
+                if self._frame_evt.wait(timeout=self.timeout / 4):
+                    got = True
+                    break
+                # The request can be swallowed: main_advance_one() sets
+                # l_FrameAdvance, but if the emulator thread is between the
+                # frame callback and its own `if (l_FrameAdvance) g_rom_pause=1`
+                # bookkeeping it consumes the flag and parks without ever
+                # running a frame. The core is then PAUSED and simply waiting,
+                # so asking again costs one round trip and unsticks it.
+                if self.core.emu_state() != m64.M64EMU_PAUSED:
+                    self._await_paused()
+                self.advance_retries += 1
+            if not got:
                 raise m64.M64Error(
-                    f"frame did not advance (frame={self.frame}, "
+                    f"frame did not advance after 4 requests (frame={self.frame}, "
                     f"polls={self.pad.polls}, state={self.core.emu_state()}); "
                     "core log:\n" + "\n".join(self.core.log[-10:]))
         return self.frame

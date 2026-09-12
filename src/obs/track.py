@@ -153,8 +153,17 @@ def observe(state, track, prev_s=None, heading_vec=None, hint=None):
     they do.
     """
     if heading_vec is None:
-        yaw = state["yaw"]
-        heading_vec = (np.sin(yaw), np.cos(yaw))
+        # Prefer the actual direction of travel over the yaw angle. `velocity`
+        # is a real Vec3f, so it needs no sign or axis convention to be guessed,
+        # and an open-loop replay showed the yaw-derived heading disagreeing
+        # with real motion the moment the kart turns.
+        v = state.get("velocity")
+        if v is not None and (abs(v[0]) > 1e-4 or abs(v[2]) > 1e-4):
+            n = float(np.hypot(v[0], v[2]))
+            heading_vec = (v[0] / n, v[2] / n)
+        else:
+            yaw = state["yaw"]
+            heading_vec = (np.sin(yaw), np.cos(yaw))
     i, s, lateral = track.project(state["pos"], hint=hint)
     err = track.heading_error(i, heading_vec)
     c = track.curvature_ahead(i)
