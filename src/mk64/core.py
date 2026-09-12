@@ -238,7 +238,7 @@ class Core:
         savestate taken a moment later, and correlate. No disassembly.
         """
         self.lib.DebugMemGetPointer.restype = ctypes.POINTER(ctypes.c_uint8)
-        M64P_DBG_PTR_RDRAM = 4
+        M64P_DBG_PTR_RDRAM = 1     # m64p_types.h: RDRAM=1, VI_REG=4
         ptr = self.lib.DebugMemGetPointer(ctypes.c_int(M64P_DBG_PTR_RDRAM))
         if not ptr:
             raise M64Error("DebugMemGetPointer(RDRAM) returned NULL "
@@ -246,6 +246,11 @@ class Core:
         return ctypes.cast(ptr, ctypes.POINTER(ctypes.c_uint8 * (8 << 20))).contents
 
     def read_u32(self, addr):
-        """Read a big-endian word at an RDRAM offset (N64 is big-endian)."""
+        """Read a word at an RDRAM offset.
+
+        Little-endian on purpose: mupen64plus stores RDRAM in host word order,
+        not the N64's big-endian layout. Reading it big-endian finds nothing —
+        not even a frame counter.
+        """
         raw = bytes(self.rdram()[addr:addr + 4])
-        return struct.unpack(">I", raw)[0]
+        return struct.unpack("<I", raw)[0]

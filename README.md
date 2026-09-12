@@ -6,6 +6,18 @@ track cut through real London. Design and staging in [SPEC.md](SPEC.md).
 
 ## Status
 
+**Stage 1, milestone 3 — the kart found — done.** `src/mk64/player.py` reads
+position, velocity, speed, heading and lap straight out of RDRAM. The address
+(`0x0F6990`) was *measured*, not looked up — see below.
+
+```
+make test-player
+[1] parked at [-139.0, -44.7, -180.0], lap 0, speed 0
+[2] cruising at 5.48/tick, consistent (speed == |velocity| == |pos-oldPos|)
+[3] 2.00 physics ticks per emulated frame, as calibrated
+[4] left vs right diverge by 100 units after 120 frames
+```
+
 **Stage 1, milestone 2 — the start line — done.** The menus are walked once by
 `src/mk64/to_race.py` and the result is committed as
 `states/luigi_raceway_tt_start.st`. Every episode now begins from that file:
@@ -86,10 +98,11 @@ through an FBO without writing those pages back byte-identically. Hashing all
 8 MiB reports a perfectly deterministic emulator as non-deterministic. Compare
 `0x000000–0x300000` (`env.game_state_bytes()`).
 
-**5. The attract screen cycles with period 3.**
-Any before/after comparison an exact multiple of 3 frames apart shows no change
-on a healthy emulator. Two of this project's own tests failed on that before the
-code was at fault. Sample consecutive frames, or use a count coprime to 3.
+**5. ~~The attract screen cycles with period 3.~~ — WRONG, and worth keeping
+visible.** Two tests really did fail this way, but the cause was trap 8 below:
+the "RAM" being hashed was the VI register block, which cycles through the three
+framebuffer origins. Reading actual RDRAM gives 7 distinct states across 7
+frames. A tidy explanation that fits the evidence is not the same as the cause.
 
 Also: a savestate has to carry the **controller** too. The pad lives outside the
 emulator, so restoring RAM alone lets the settling frame replay a different
@@ -133,8 +146,59 @@ bookkeeping. Request the next frame in that window and the emulator thread eats
 the flag, pauses anyway, and never resumes — an intermittent hang that reads as
 a slow frame. Wait for `M64EMU_PAUSED` instead.
 
+## Finding the kart (milestone 3)
+
+`src/mk64/ram_hunt.py` runs four trajectories out of one savestate — `still`,
+`fwd`, `left`, `right` — and looks for memory that moves under throttle, sits
+exactly still without it, and splits opposite ways under steering. Rollback is
+what makes this a laboratory rather than a fishing trip: every trajectory starts
+from the identical instant, so any difference was caused by the input.
+
+The struct *layout* came from the mk64 decomp (`pos` 0x14, `oldPos` 0x20,
+`velocity` 0x34, `speed` 0x94, size 0xDD8). The *address* had to be measured —
+which is the half that will still work on Sonic Riders, where there is no decomp
+to read.
+
+The winner scored 16/16 and proves itself:
+
+```
+still  pos [-139.0, -44.7, -180.0]   speed 0.00   lap 0
+fwd    pos [-139.0, -44.7, -785.3]   oldPos [-139.0, -44.7, -780.5]
+       vel [0.0, 0.0, -4.82]         speed 4.82
+```
+
+`speed` == `|velocity|` == `|pos - oldPos|` == 4.82, three fields stored
+separately agreeing to the last digit. Nothing lands on that by coincidence, so
+`player.check()` keeps asserting it at runtime: if the struct ever moves, it
+fails loudly instead of feeding the policy noise.
+
+**8. `M64P_DBG_PTR_RDRAM` is 1, not 4.** Four is `M64P_DBG_PTR_VI_REG`, a small
+register block — so `rdram()` returned a pointer to the VI registers and every
+read ran megabytes off the end of it. It did not crash reliably, because whether
+it segfaults depends on heap layout; under gdb it survived and without it the
+process dumped core. It also quietly invalidated earlier results: the first
+"rollback exact" was measured against the wrong bytes, and trap 5 was pure
+artefact. **A test that passes against the wrong memory is worse than one that
+fails.**
+
+**9. RDRAM is stored in HOST word order — little-endian on x86.** Not the N64's
+big-endian layout. Scanning as `>f4` finds nothing real; the giveaway is that a
+big-endian scan turns up **zero** words incrementing by 1 per frame, and every
+running game has a frame counter somewhere. Little-endian found 13 immediately
+(there is one at `0x0E9E24`).
+
+**10. `RandomizeInterrupt` defaults to on.** The core jitters PI/SI interrupt
+timing deliberately. The same actions from the same savestate then diverge by
+~100 bytes — small enough to look like a subtle bug of your own, fatal to
+segment search. Turn it off and replay is bit-exact.
+
+**11. MK64 runs two physics ticks per rendered frame.** `speed` and
+`pos - oldPos` are per *tick*, so the kart covers `2 x speed` per emulated
+frame — measured at 2.00 exactly. A silent factor of two in every distance,
+reward and lookahead otherwise.
+
 ## Next
 
-Milestone 3: `ram_hunt` — find the kart's position, speed and heading by
-diffing savestates across known motions rather than by disassembly. Expect N64
-fixed point, not IEEE floats.
+Milestone 4: ghost → map. Drive a lap, log positions, fit a centreline, and drop
+virtual checkpoints every ~10 m to get dense reward with zero game knowledge —
+then behaviour-clone that lap so training never starts from random.

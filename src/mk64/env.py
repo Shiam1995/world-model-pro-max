@@ -64,6 +64,11 @@ class MK64Env:
         self.shot_dir.mkdir(parents=True, exist_ok=True)
         self.core.config_set("Core", "ScreenshotPath", str(self.shot_dir) + "/")
         self.core.config_set("Core", "OnScreenDisplay", False)
+        # The core jitters PI/SI interrupt timing on purpose ("RandomizeInterrupt",
+        # default on) to shake out games that depend on exact timing. For us it
+        # means the same actions from the same savestate do not replay
+        # identically -- which would quietly poison every segment search.
+        self.core.config_set("Core", "RandomizeInterrupt", False)
         # The Game Boy Camera capture backend defaults to "opencv", which
         # blocks on a camera that is not there and hangs ROM startup before
         # the CPU ever runs. MK64 has no transfer pak; switch it off.
@@ -176,8 +181,11 @@ class MK64Env:
                             while fh.read(1 << 20):
                                 pass
                         return size
-                    except OSError:
-                        pass            # still being written
+                    except (OSError, EOFError):
+                        # A truncated gzip raises EOFError, which is NOT an
+                        # OSError — catching only OSError lets the "still being
+                        # written" case escape as a hard failure.
+                        pass
                 last = size
             self.step(1)
         raise m64.M64Error(
